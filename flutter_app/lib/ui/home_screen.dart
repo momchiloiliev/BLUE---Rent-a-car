@@ -30,32 +30,32 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.width * 0.35,
-              child: const Column(
-                children: [
-                  Center(
-                    child: Text(
-                      "BEST CARS",
-                      style: TextStyle(
-                        color: Colors.lightBlueAccent,
-                        fontSize: 50,
-                        fontFamily: "Arvo-Bold",
-                      ),
+            height: MediaQuery.of(context).size.width * 0.35,
+            child: const Column(
+              children: [
+                Center(
+                  child: Text(
+                    "BEST CARS",
+                    style: TextStyle(
+                      color: Colors.lightBlueAccent,
+                      fontSize: 50,
+                      fontFamily: "Arvo-Bold",
                     ),
                   ),
-                  Center(
-                    child: Text(
-                      "FOR RENT",
-                      style: TextStyle(
-                        color: Colors.lightBlueAccent,
-                        fontSize: 50,
-                        fontFamily: "Arvo-Bold",
-                      ),
+                ),
+                Center(
+                  child: Text(
+                    "FOR RENT",
+                    style: TextStyle(
+                      color: Colors.lightBlueAccent,
+                      fontSize: 50,
+                      fontFamily: "Arvo-Bold",
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           SizedBox(
             height: 270,
             child: Transform.translate(
@@ -73,19 +73,15 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, "/pickBrand");
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightBlueAccent,
-                foregroundColor: Colors.white,
-                fixedSize: const Size(215, 46),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )
-              ),
+                  backgroundColor: Colors.lightBlueAccent,
+                  foregroundColor: Colors.white,
+                  fixedSize: const Size(215, 46),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  )),
               child: const Text(
                 'Rent a car',
-                style: TextStyle(
-                  fontFamily: "Arvo-Regular",
-                  fontSize: 20
-                ),
+                style: TextStyle(fontFamily: "Arvo-Regular", fontSize: 20),
               ),
             ),
           )

@@ -1,14 +1,13 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
 class BrandPickScreen extends StatefulWidget {
-  const BrandPickScreen({super.key});
+  const BrandPickScreen({Key? key}) : super(key: key);
 
   @override
-  State<BrandPickScreen> createState() => _BrandPickScreenState();
+  _BrandPickScreenState createState() => _BrandPickScreenState();
 }
 
 class _BrandPickScreenState extends State<BrandPickScreen> {
-
   Map<int, Color> buttonColors = {
     1: Colors.white,
     2: Colors.white,
@@ -16,20 +15,11 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
     4: Colors.white,
   };
 
-  bool isClicked = true;
-
-  void changeColor(int i) {
-    if(isClicked){
-      setState(() {
-        buttonColors[i] = Colors.grey;
-        isClicked = false;
-      });
-    } else {
-      setState(() {
-        buttonColors[i] = Colors.white;
-        isClicked = true;
-      });
-    }
+  void changeColor(int index) {
+    setState(() {
+      buttonColors
+          .updateAll((key, value) => key == index ? Colors.grey : Colors.white);
+    });
   }
 
   @override
@@ -42,17 +32,17 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 40, bottom: 0),
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.width * 0.37,
-                  child: const Text(
-                    "Pick your preferred brand",
-                    style: TextStyle(
-                        fontSize: 40,
-                        fontFamily: "Arvo-Bold",
-                        color: Colors.lightBlueAccent
-                    ),
-                  )
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.75,
+                height: MediaQuery.of(context).size.width * 0.37,
+                child: const Text(
+                  "Pick your preferred brand",
+                  style: TextStyle(
+                    fontSize: 37,
+                    fontFamily: "Arvo-Bold",
+                    color: Colors.lightBlueAccent,
+                  ),
+                ),
               ),
             ),
             Column(
@@ -63,36 +53,8 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          changeColor(1);
-                        },
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: buttonColors[1]
-                          ),
-                          child: const Image(image: AssetImage(
-                              "images/ford-logo.png"
-                          )),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          changeColor(2);
-                        },
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              color: buttonColors[2]
-                          ),
-                          child: const Image(image: AssetImage(
-                              "images/bmw-logo.png"
-                          )),
-                        ),
-                      ),
+                      buildLogoButton("images/ford-logo.png", 1),
+                      buildLogoButton("images/bmw-logo.png", 2),
                     ],
                   ),
                 ),
@@ -100,36 +62,8 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        changeColor(3);
-                      },
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: buttonColors[3]
-                        ),
-                        child: const Image(image: AssetImage(
-                            "images/tesla-logo.png"
-                        ),fit: BoxFit.cover,),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        changeColor(4);
-                      },
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: buttonColors[4]
-                        ),
-                        child: const Image(image: AssetImage(
-                            "images/mercedes-logo.png"
-                        ), fit: BoxFit.cover,),
-                      ),
-                    ),
+                    buildLogoButton("images/tesla-logo.png", 3),
+                    buildLogoButton("images/mercedes-logo.png", 4),
                   ],
                 ),
               ],
@@ -137,23 +71,18 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 40),
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, "/" as Route<Object?>);
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightBlueAccent,
-                    foregroundColor: Colors.white,
-                    fixedSize: const Size(215, 46),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )
+                  backgroundColor: Colors.lightBlueAccent,
+                  foregroundColor: Colors.white,
+                  fixedSize: const Size(215, 46),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: const Text(
                   'Rent a car',
-                  style: TextStyle(
-                      fontFamily: "Arvo-Regular",
-                      fontSize: 20
-                  ),
+                  style: TextStyle(fontFamily: "Arvo-Regular", fontSize: 20),
                 ),
               ),
             )
@@ -162,5 +91,20 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
       ),
     );
   }
-}
 
+  Widget buildLogoButton(String imagePath, int index) {
+    return InkWell(
+      onTap: () {
+        changeColor(index);
+      },
+      child: Container(
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(color: buttonColors[index]),
+        child: Image(
+          image: AssetImage(imagePath),
+        ),
+      ),
+    );
+  }
+}

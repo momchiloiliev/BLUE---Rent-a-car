@@ -24,7 +24,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
           Positioned(
             left: 0,
             right: 0,
-            top: 130,
+            top: 100,
             child: _buildBrandList(),
           ),
           Positioned(
@@ -51,7 +51,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
 
   Widget _buildBrandList() {
     return Container(
-      height: 90,
+      height:90,
       child: ListView.separated(
         itemCount: images.length,
         scrollDirection: Axis.horizontal,
@@ -75,7 +75,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
 
   Container _buildEllipse() {
     return Container(
-      height: 350,
+      height: 250,
       decoration: const BoxDecoration(
         color: Colors.blue,
         borderRadius: BorderRadius.only(
@@ -88,7 +88,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
 
   Widget _buildCarList() {
     return Container(
-      height: 400,
+      height: 550,
       child: ListView.separated(
         itemCount: 5,
         scrollDirection: Axis.horizontal,
@@ -96,7 +96,15 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
           width: 15,
         ),
         itemBuilder: (context, index) {
-          return CarCard();
+          if(index==0){
+            return Container(
+              margin: EdgeInsets.only(left:23.0),
+              child: CarCard(),
+            );
+          }
+          else
+            return CarCard();
+          // return CarCard();
         },
       ),
     );

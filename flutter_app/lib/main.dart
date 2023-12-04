@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/brand_pick_screen.dart';
 import 'package:flutter_app/ui/home_screen.dart';
+import 'package:flutter_app/ui/list_cars_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
       // Set your MaterialApp properties here
       home: const HomeScreen(),
       routes: {
-        "/pickBrand": (context) => const BrandPickScreen()},
+        "/pickBrand": (context) => const BrandPickScreen(),
+        "/carList": (context) => const ListCarsScreen()
+      },
     );
   }
 }

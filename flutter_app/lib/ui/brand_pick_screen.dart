@@ -71,7 +71,9 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 40),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, "/carList");
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent,
                   foregroundColor: Colors.white,

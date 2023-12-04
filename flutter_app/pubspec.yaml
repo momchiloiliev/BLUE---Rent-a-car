@@ -72,6 +72,7 @@ flutter:
     - images/bmw-logo.png
     - images/tesla-logo.png
     - images/mercedes-logo.png
+    - images/bmw_amg.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

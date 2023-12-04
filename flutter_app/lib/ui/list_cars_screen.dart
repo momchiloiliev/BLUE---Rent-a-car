@@ -1,7 +1,8 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/car_card.dart';
 
 class ListCarsScreen extends StatefulWidget {
-  const ListCarsScreen({super.key});
+  const ListCarsScreen({Key? key}) : super(key: key);
 
   @override
   State<ListCarsScreen> createState() => _ListCarsScreenState();
@@ -18,14 +19,37 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [SizedBox(height: 70), brandList(), ellipse()],
+      body: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 130,
+            child: _buildBrandList(),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _buildEllipse(),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 200,
+            child: Column(
+              children: [
+                SizedBox(height: 70),
+                _buildCarList(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget brandList() {
+  Widget _buildBrandList() {
     return Container(
       height: 90,
       child: ListView.separated(
@@ -49,15 +73,32 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
     );
   }
 
-  Container ellipse() {
+  Container _buildEllipse() {
     return Container(
-      alignment: Alignment.bottomCenter,
-      height: 250,
+      height: 350,
       decoration: const BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.elliptical(1000, 800),
-              topRight: Radius.elliptical(1000, 800))),
+        color: Colors.blue,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.elliptical(1000, 800),
+          topRight: Radius.elliptical(1000, 800),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCarList() {
+    return Container(
+      height: 400,
+      child: ListView.separated(
+        itemCount: 5,
+        scrollDirection: Axis.horizontal,
+        separatorBuilder: (context, index) => SizedBox(
+          width: 15,
+        ),
+        itemBuilder: (context, index) {
+          return CarCard();
+        },
+      ),
     );
   }
 }

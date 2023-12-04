@@ -10,28 +10,29 @@ class CarCard extends StatefulWidget {
 class _CarCardState extends State<CarCard> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Color(0xFFE5E9F2),
-      elevation: 15,
-      margin: EdgeInsets.all(12),
+    return Container(
+      margin: const EdgeInsets.only(right: 25),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
-            width: 330,
-            child: Transform.translate(
-              offset: const Offset(30, -35),
-              child: const Image(
-                width: 200,
-                height: 200,
-                image: AssetImage("images/bmw_amg.png"),
-              ),
+          Transform.translate(
+            offset: const Offset(30, -30),
+            child: const Image(
+              width: 300,
+              height: 200,
+              image: AssetImage("images/bmw_amg.png"),
             ),
           ),
           const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "BMW GLA45",
@@ -51,59 +52,56 @@ class _CarCardState extends State<CarCard> {
                   )
                 ],
               ),
+              SizedBox(
+                width: 50,
+              ),
+              Column(
+                children: [
+                  Icon(
+                    Icons.water_drop,
+                    color: Colors.blue,
+                  ),
+                ],
+              )
             ],
           ),
           Row(
             children: [
-              Container(
-                width: 220,
-                height: 70,
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.local_gas_station,
-                            size: 23,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 1,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            '531 KM',
-                            style: TextStyle(
-                                fontFamily: "Avro",
-                                fontSize: 19,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 1,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'on full tank',
-                            style: TextStyle(
-                                fontFamily: "Avro",
-                                fontSize: 11,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: 220,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 15.0, top: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.local_gas_station,
+                          size: 23,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          '531 KM',
+                          style: TextStyle(
+                              fontFamily: "Avro",
+                              fontSize: 16,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          'on full tank',
+                          style: TextStyle(
+                              fontFamily: "Avro",
+                              fontSize: 10,
+                              color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -119,7 +117,7 @@ class _CarCardState extends State<CarCard> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Color(0xFFE5E9F2),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(color: Colors.blueAccent),
                     ),
@@ -170,7 +168,7 @@ class _CarCardState extends State<CarCard> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 65,
               ),
               Column(
@@ -179,7 +177,7 @@ class _CarCardState extends State<CarCard> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Color(0xFFE5E9F2),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(color: Colors.blueAccent),
                     ),
@@ -233,7 +231,7 @@ class _CarCardState extends State<CarCard> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 35),
+            padding: const EdgeInsets.only(bottom: 20, top: 20),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/pickBrand");
@@ -247,7 +245,7 @@ class _CarCardState extends State<CarCard> {
                   )),
               child: const Text(
                 'Rent BMW GLA45',
-                style: TextStyle(fontFamily: "Arvo-Regular", fontSize: 17),
+                style: TextStyle(fontFamily: "Arvo-Regular", fontSize: 15),
               ),
             ),
           )

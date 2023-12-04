@@ -20,10 +20,10 @@ class _CarCardState extends State<CarCard> {
           SizedBox(
             width: 330,
             child: Transform.translate(
-              offset: const Offset(10, -30),
+              offset: const Offset(30, -35),
               child: const Image(
                 width: 200,
-                height: 180,
+                height: 200,
                 image: AssetImage("images/bmw_amg.png"),
               ),
             ),
@@ -75,25 +75,38 @@ class _CarCardState extends State<CarCard> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 1,),
+                      SizedBox(
+                        height: 1,
+                      ),
                       Row(
                         children: [
-                          Text('531 KM', style: TextStyle(fontFamily: "Avro", fontSize: 19, color: Colors.white),),
-
+                          Text(
+                            '531 KM',
+                            style: TextStyle(
+                                fontFamily: "Avro",
+                                fontSize: 19,
+                                color: Colors.white),
+                          ),
                         ],
                       ),
-                      SizedBox(height: 1,),
+                      SizedBox(
+                        height: 1,
+                      ),
                       Row(
                         children: [
-                          Text('on full tank', style: TextStyle(fontFamily: "Avro", fontSize: 11, color: Colors.white),),
+                          Text(
+                            'on full tank',
+                            style: TextStyle(
+                                fontFamily: "Avro",
+                                fontSize: 11,
+                                color: Colors.white),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
-
-                )
-
+              )
             ],
           ),
           Row(
@@ -111,7 +124,7 @@ class _CarCardState extends State<CarCard> {
                       border: Border.all(color: Colors.blueAccent),
                     ),
                     child: const Padding(
-                      padding: EdgeInsets.only(left: 6.0,top:4.0),
+                      padding: EdgeInsets.only(left: 6.0, top: 4.0),
                       child: Column(
                         children: [
                           Row(
@@ -123,17 +136,32 @@ class _CarCardState extends State<CarCard> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 1,),
+                          SizedBox(
+                            height: 1,
+                          ),
                           Row(
                             children: [
-                              Text('5.6 sec', style: TextStyle(fontFamily: "Avro", fontSize: 19, color: Colors.blueAccent),),
-
+                              Text(
+                                '5.6 sec',
+                                style: TextStyle(
+                                    fontFamily: "Avro",
+                                    fontSize: 19,
+                                    color: Colors.blueAccent),
+                              ),
                             ],
                           ),
-                          SizedBox(height: 1,),
+                          SizedBox(
+                            height: 1,
+                          ),
                           Row(
                             children: [
-                              Text('0-100 KM/h', style: TextStyle(fontFamily: "Avro", fontSize: 11, color: Colors.blueAccent),),
+                              Text(
+                                '0-100 KM/h',
+                                style: TextStyle(
+                                    fontFamily: "Avro",
+                                    fontSize: 11,
+                                    color: Colors.blueAccent),
+                              ),
                             ],
                           ),
                         ],
@@ -142,7 +170,9 @@ class _CarCardState extends State<CarCard> {
                   ),
                 ],
               ),
-              SizedBox(width:65,),
+              SizedBox(
+                width: 65,
+              ),
               Column(
                 children: [
                   Container(
@@ -154,7 +184,7 @@ class _CarCardState extends State<CarCard> {
                       border: Border.all(color: Colors.blueAccent),
                     ),
                     child: const Padding(
-                      padding: EdgeInsets.only(left: 6.0,top:4.0),
+                      padding: EdgeInsets.only(left: 6.0, top: 4.0),
                       child: Column(
                         children: [
                           Row(
@@ -166,23 +196,37 @@ class _CarCardState extends State<CarCard> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 1,),
+                          SizedBox(
+                            height: 1,
+                          ),
                           Row(
                             children: [
-                              Text('416 HP', style: TextStyle(fontFamily: "Avro", fontSize: 19, color: Colors.blueAccent),),
-
+                              Text(
+                                '416 HP',
+                                style: TextStyle(
+                                    fontFamily: "Avro",
+                                    fontSize: 19,
+                                    color: Colors.blueAccent),
+                              ),
                             ],
                           ),
-                          SizedBox(height: 1,),
+                          SizedBox(
+                            height: 1,
+                          ),
                           Row(
                             children: [
-                              Text('Power', style: TextStyle(fontFamily: "Avro", fontSize: 11, color: Colors.blueAccent),),
+                              Text(
+                                'Power',
+                                style: TextStyle(
+                                    fontFamily: "Avro",
+                                    fontSize: 11,
+                                    color: Colors.blueAccent),
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ),
-
                   ),
                 ],
               )

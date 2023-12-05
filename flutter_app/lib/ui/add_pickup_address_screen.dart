@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/appbar.dart';
 import 'package:flutter_app/ui/button.dart';
 
 class AddPickUpAddressScreen extends StatefulWidget {
@@ -19,22 +20,8 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Add Pick Up Address",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.blue,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+      appBar: CustomAppBar(
+        title: "Add Pick Up Address",
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -80,7 +67,7 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
               ),
             ),
           ),
-          const BlueButton(text: "Save", route: "route")
+          const BlueButton(text: "Save", route: "/yourSelection")
         ],
       ),
     );

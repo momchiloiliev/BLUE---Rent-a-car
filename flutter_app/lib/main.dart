@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/add_pickup_address_screen.dart';
 import 'package:flutter_app/ui/brand_pick_screen.dart';
 import 'package:flutter_app/ui/home_screen.dart';
 import 'package:flutter_app/ui/list_cars_screen.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       home: const HomeScreen(),
       routes: {
         "/pickBrand": (context) => const BrandPickScreen(),
-        "/carList": (context) => const ListCarsScreen()
+        "/carList": (context) => const ListCarsScreen(),
+        "/addPickUpAddress": (context) => const AddPickUpAddressScreen(),
       },
     );
   }

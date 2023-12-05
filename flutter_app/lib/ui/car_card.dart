@@ -234,7 +234,7 @@ class _CarCardState extends State<CarCard> {
             padding: const EdgeInsets.only(bottom: 20, top: 20),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/pickBrand");
+                Navigator.pushNamed(context, "/addPickUpAddress");
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent,

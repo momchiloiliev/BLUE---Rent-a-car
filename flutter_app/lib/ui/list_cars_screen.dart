@@ -36,10 +36,9 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
           Positioned(
             left: 0,
             right: 0,
-            top: 200,
+            top: 230,
             child: Column(
               children: [
-                SizedBox(height: 70),
                 _buildCarList(),
               ],
             ),
@@ -51,7 +50,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
 
   Widget _buildBrandList() {
     return Container(
-      height:90,
+      height: 80,
       child: ListView.separated(
         itemCount: images.length,
         scrollDirection: Axis.horizontal,
@@ -88,22 +87,21 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
 
   Widget _buildCarList() {
     return Container(
-      height: 550,
+      height: 580,
       child: ListView.separated(
         itemCount: 5,
         scrollDirection: Axis.horizontal,
         physics: PageScrollPhysics(),
         separatorBuilder: (context, index) => SizedBox(
-          width: 15,
+          width: 10,
         ),
         itemBuilder: (context, index) {
-          if(index==0){
+          if (index == 0) {
             return Container(
-              margin: EdgeInsets.only(left:23.0),
+              margin: EdgeInsets.only(left: 23.0),
               child: CarCard(),
             );
-          }
-          else
+          } else
             return CarCard();
           // return CarCard();
         },

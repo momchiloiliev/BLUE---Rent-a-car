@@ -400,15 +400,20 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
               padding: const EdgeInsets.all(16.0),
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 615.0,
             left:130.0,
-            child: Text(
-              "Checkout - ",
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
+            child: ElevatedButton(
+              onPressed: (){
+                Navigator.pushNamed(context, "/addPickUpAddress");
+              },
+              child: Text(
+                "Checkout - ",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

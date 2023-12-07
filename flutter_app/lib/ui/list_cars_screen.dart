@@ -91,7 +91,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
       child: ListView.separated(
         itemCount: 5,
         scrollDirection: Axis.horizontal,
-        physics: PageScrollPhysics(),
+        // physics: PageScrollPhysics(),
         separatorBuilder: (context, index) => SizedBox(
           width: 10,
         ),

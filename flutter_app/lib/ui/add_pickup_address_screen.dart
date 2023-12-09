@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/appbar.dart';
 import 'package:flutter_app/ui/button.dart';
+import 'package:flutter_app/ui/shadow_button.dart';
 
 class AddPickUpAddressScreen extends StatefulWidget {
   const AddPickUpAddressScreen({super.key});
@@ -67,7 +68,7 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
               ),
             ),
           ),
-          const BlueButton(text: "Save", route: "/yourSelection")
+          shadowButton("Save", "/yourSelection")
         ],
       ),
     );

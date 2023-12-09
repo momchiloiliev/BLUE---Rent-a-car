@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_credit_card: 4.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -74,6 +75,10 @@ flutter:
     - images/mercedes-logo.png
     - images/bmw_amg.png
     - images/ford.png
+    - images/card_images/bg-dark.png
+    - images/card_images/bg-light.png
+    - images/card_images/card_bg.png
+    - images/card_images/mastercard.png
     - images/Done.png
   #   - images/a_dot_ham.jpeg
 

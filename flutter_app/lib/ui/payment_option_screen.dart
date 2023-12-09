@@ -36,6 +36,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(top: 15),
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -68,7 +69,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                       children: [
                         const Text(
                           'Agree to our ',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 18),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -84,7 +85,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                           child: const Text(
                             'Terms and conditions',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 18,
                               color: Colors.blue,
                             ),
                           ),
@@ -207,29 +208,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
           ),
           buildAddressContainer(context, 0),
           Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 15,
-                  spreadRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
-                const BoxShadow(
-                  color: Colors.white,
-                  blurRadius: 15,
-                  spreadRadius: 15,
-                  offset: Offset(0, 3),
-                ),
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 15,
-                  spreadRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
+            margin: EdgeInsets.only(bottom: 10),
             child: Column(
               children: [
                 Container(
@@ -274,7 +253,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                 ),
                 Container(
                   decoration: const BoxDecoration(
-                      border: const Border(
+                      border: Border(
                           top: BorderSide(color: Colors.grey, width: 0.5))),
                   padding: const EdgeInsets.only(
                       bottom: 14, left: 14, right: 14, top: 10),

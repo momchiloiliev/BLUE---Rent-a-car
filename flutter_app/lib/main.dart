@@ -3,6 +3,7 @@ import 'package:flutter_app/ui/add_pickup_address_screen.dart';
 import 'package:flutter_app/ui/brand_pick_screen.dart';
 import 'package:flutter_app/ui/home_screen.dart';
 import 'package:flutter_app/ui/list_cars_screen.dart';
+import 'package:flutter_app/ui/order_confirmed_screen.dart';
 import 'package:flutter_app/ui/payment_option_screen.dart';
 import 'package:flutter_app/ui/payment_screen.dart';
 import 'package:flutter_app/ui/rent_selection_screen.dart';
@@ -23,11 +24,12 @@ class MyApp extends StatelessWidget {
       routes: {
         "/pickBrand": (context) => const BrandPickScreen(),
         "/carList": (context) => const ListCarsScreen(),
-        "/rentSelection" : (context) => const RentSelectionScreen(),
+        "/rentSelection": (context) => const RentSelectionScreen(),
         "/addPickUpAddress": (context) => const AddPickUpAddressScreen(),
         "/yourSelection": (context) => const YourSelectionScreen(),
         "/paymentOption": (context) => const PaymentOptionScreen(),
         "/payment": (context) => const PaymentScreen(),
+        "/orderConfirmed": (context) => const OrderConfirmedScreen(),
       },
     );
   }

@@ -56,7 +56,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ],
             ),
           ),
-          BlueButton(text: "Pay", route: "route")
+          BlueButton(text: "Pay", route: "/orderConfirmed")
         ],
       ),
     );

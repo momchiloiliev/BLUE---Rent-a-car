@@ -7,6 +7,7 @@ import 'package:flutter_app/ui/order_confirmed_screen.dart';
 import 'package:flutter_app/ui/payment_option_screen.dart';
 import 'package:flutter_app/ui/payment_screen.dart';
 import 'package:flutter_app/ui/rent_selection_screen.dart';
+import 'package:flutter_app/ui/your_reservations_screen.dart';
 import 'package:flutter_app/ui/your_selection_screen.dart';
 
 void main() {
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         "/paymentOption": (context) => const PaymentOptionScreen(),
         "/payment": (context) => const PaymentScreen(),
         "/orderConfirmed": (context) => const OrderConfirmedScreen(),
+        "/yourReservations": (context) => const YourReservationsScreen(),
       },
     );
   }

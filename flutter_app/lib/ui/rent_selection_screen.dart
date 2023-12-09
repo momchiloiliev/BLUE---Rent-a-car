@@ -12,9 +12,13 @@ class RentSelectionScreen extends StatefulWidget {
 class _RentSelectionScreenState extends State<RentSelectionScreen> {
   DateTime? selectedDate;
   String startingFromDateInfo = "";
-  int dayCount = 0;
-  bool driverSelected = false;
-  bool babySitSelected = false;
+  int dayCount = 1;
+  bool isDriverSelected = false;
+  bool isBabySeatSelected = false;
+  int carPrice = 3000;
+  int driverIncludedPrice = 3000;
+  int babySeatIncludedPrice = 1000;
+  int checkoutSum = 0;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime now = DateTime.now();
@@ -29,19 +33,19 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
       setState(() {
         selectedDate = picked;
 
-        // Update the text based on the selected date
+// Update the text based on the selected date
         if (isToday(picked)) {
           startingFromDateInfo = "Today";
         } else if (isTomorrow(picked)) {
           startingFromDateInfo = "Tomorrow";
         } else {
-          startingFromDateInfo = "";
+          startingFromDateInfo = " ";
         }
       });
     } else {
-      // No date chosen
+// No date chosen
       setState(() {
-        startingFromDateInfo = "";
+        startingFromDateInfo = " ";
       });
     }
   }
@@ -63,395 +67,470 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   void _addDay() {
     setState(() {
       dayCount++;
+      _calculateCheckoutSum();
     });
   }
 
   void _removeDay() {
-    if (dayCount > 0) {
+    if (dayCount >= 1) {
       setState(() {
         dayCount--;
+        _calculateCheckoutSum();
       });
     }
+  }
+
+  void _calculateCheckoutSum() {
+    int daysTotal = carPrice * dayCount;
+    int driverTotal = isDriverSelected ? driverIncludedPrice * dayCount : 0;
+    int babySeatTotal = isBabySeatSelected ? babySeatIncludedPrice : 0;
+
+    setState(() {
+      checkoutSum = daysTotal + driverTotal + babySeatTotal;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateCheckoutSum(); // Call the function when the widget is first created
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0),
-        child: AppBar(
-          backgroundColor: Colors.blueAccent,
-          automaticallyImplyLeading: false,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(80.0),
+          child: AppBar(
+            backgroundColor: Colors.blueAccent,
+            automaticallyImplyLeading: false,
+          ),
         ),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(top: 115.0, bottom: 42.0),
-            decoration: const BoxDecoration(
-              color: Colors.blueAccent,
+        body: Stack(
+          children: [
+            Positioned(
+              left: 110.0,
+              top: 1.0,
+              child: Image(
+                image: AssetImage("images/ford.png"),
+                width: 380.0,
+                height: 350.0,
+                fit: BoxFit.fitWidth,
+              ),
             ),
-            child: Row(
+            Column(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 8.0, top: 10.0),
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 57.0, top: 40.0),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back_ios,
+                                color: Colors.blue,
+                                size: 34.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 9,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16.0),
-                      bottomLeft: Radius.circular(16.0),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 60.0, top: 28.0),
+                      child: Container(
+                        width: 350,
+                        height: 580,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFE5E9F2),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25.0),
+                            bottomLeft: Radius.circular(25.0),
+                          ),
+                        ),
+                        child: Column(children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 35.0, top: 50.0),
+                                      child: Icon(
+                                        Icons.water_drop,
+                                        color: Colors.blueAccent,
+                                        size: 25.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 35.0, top: 40.0),
+                                    child: Text(
+                                      "Edge ST",
+                                      style: TextStyle(
+                                        fontSize: 30.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20.0, left: 30.0),
+                                child: Container(
+                                  width: 295.0,
+                                  height: 70.0,
+                                  child: ElevatedButton(
+                                    onPressed: () => _selectDate(context),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        side: BorderSide(
+                                          color: Colors.grey,
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          selectedDate != null
+                                              ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
+                                              : "Starting from",
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black38,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Text(
+                                            startingFromDateInfo,
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 2.0),
+                                          child: Icon(
+                                            Icons.calendar_month,
+                                            color: Colors.black,
+                                            size: 30.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 30.0, top: 20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Days",
+                                        style: TextStyle(
+                                          fontSize: 28.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            carPrice.toString(),
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black38,
+                                            ),
+                                          ),
+                                          Text(
+                                            " MKD/day",
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black38,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20.0, top: 20.0),
+                                  child: Container(
+                                    width: 132,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton(
+                                          onPressed: _removeDay,
+                                          icon: const Icon(
+                                            Icons.remove,
+                                            color: Colors.black38,
+                                            size: 30.0,
+                                          ),
+                                        ),
+                                        Text(
+                                          dayCount.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 30.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: _addDay,
+                                          icon: const Icon(
+                                            Icons.add,
+                                            color: Colors.black38,
+                                            size: 30.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 20.0, top: 10.0),
+                                    child: Checkbox(
+                                      value: isDriverSelected,
+                                      activeColor: Colors.blueAccent,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          isDriverSelected = value ?? false;
+                                          _calculateCheckoutSum();
+                                        });
+                                      },
+                                      visualDensity: VisualDensity.comfortable,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'Driver',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black38,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 10.0, right: 30.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      driverIncludedPrice.toString(),
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      " MKD/day",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20.0),
+                                    child: Checkbox(
+                                      value: isBabySeatSelected,
+                                      activeColor: Colors.blueAccent,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          isBabySeatSelected = value ?? false;
+                                          _calculateCheckoutSum();
+                                        });
+                                      },
+                                      visualDensity: VisualDensity.comfortable,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 1),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'Baby Seat',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black38,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 2.0, right: 30.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      babySeatIncludedPrice.toString(),
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      " MKD",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 40.0),
+                                child: Container(
+                                  width: 200,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, "/addPickUpAddress");
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        side: BorderSide(
+                                          color: Colors.grey,
+                                          width: 3.0,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Checkout - " +
+                                              checkoutSum.toString(),
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black38,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ]),
+                      ),
                     ),
-                    child: Container(
-                      color: const Color(0xFFE5E9F2),
-                      padding: const EdgeInsets.all(16.0),
-                    ),
-                  ),
+                  ],
                 ),
               ],
             ),
-          ),
-          const Positioned(
-            top: 200.0,
-            left: 75.0,
-            child: Icon(
-              Icons.water_drop,
-              color: Colors.blueAccent,
-              size: 25.0,
-            ),
-          ),
-          const Positioned(
-            top: 295.0,
-            left: 80.0,
-            right: 50.0,
-            child: Text(
-              "Edge ST",
-              style: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          const Positioned(
-            left: 110.0,
-            top: 1.0,
-            child: Image(
-              image: AssetImage("images/ford.png"),
-              width: 380.0,
-              height: 350.0,
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          Positioned(
-            width: 300.0,
-            height: 60.0,
-            top: 360.0,
-            left: 80.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              ),
-              padding: const EdgeInsets.all(16.0),
-            ),
-          ),
-          Positioned(
-            top: 375.0,
-            left: 330.0,
-            child: GestureDetector(
-              onTap: () => _selectDate(context),
-              child: const Icon(
-                Icons.calendar_month,
-                color: Colors.black,
-                size: 30.0,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 378.0,
-            left: 230.0,
-            child: Text(
-              startingFromDateInfo,
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w300,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 382.0,
-            left: 100.0,
-            child: Text(
-              selectedDate != null
-                  ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                  : "Starting from",
-              style: const TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w600,
-                color: Colors.black38,
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 430.0,
-            left: 80.0,
-            right: 50.0,
-            child: Text(
-              "Days",
-              style: TextStyle(
-                fontSize: 28.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 465.0,
-            left: 80.0,
-            right: 50.0,
-            child: Text(
-              "3.000",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black38,
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 465.0,
-            left: 128.0,
-            right: 50.0,
-            child: Text(
-              "MKD/day",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black38,
-              ),
-            ),
-          ),
-          Positioned(
-            width: 130.0,
-            height: 60.0,
-            top: 430.0,
-            left: 250.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              ),
-              padding: const EdgeInsets.all(16.0),
-            ),
-          ),
-          Positioned(
-            top: 430.0,
-            left: 250.0,
-            child: IconButton(
-                onPressed: _removeDay,
-                icon: const Icon(
-                  Icons.remove,
-                  color: Colors.black38,
-                  size: 40.0,
-                )),
-          ),
-          Positioned(
-            top: 438.0,
-            left: 305.0,
-            child: Text(
-              dayCount.toString(),
-              style: const TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 430.0,
-            left: 325.0,
-            child: IconButton(
-              onPressed: _addDay,
-              icon: const Icon(
-                Icons.add,
-                color: Colors.black38,
-                size: 40.0,
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 500.0,
-            left: 78.0,
-            child: Icon(
-              Icons.crop_square_sharp,
-              color: Colors.black,
-              size: 30.0,
-            ),
-          ),
-          const Positioned(
-            top: 530.0,
-            left: 78.0,
-            child: Icon(
-              Icons.crop_square_sharp,
-              color: Colors.black,
-              size: 30.0,
-            ),
-          ),
-          const Positioned(
-              top: 502.0,
-              left: 110.0,
-              child: Text(
-                "Driver",
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.black38,
-                  fontWeight: FontWeight.w400,
-                ),
-              )),
-          const Positioned(
-              top: 532.0,
-              left: 110.0,
-              child: Text(
-                "Baby sit",
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.black38,
-                  fontWeight: FontWeight.w400,
-                ),
-              )),
-          const Positioned(
-            top: 502.0,
-            right: 120.0,
-            child: Text(
-              "7.000",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black38,
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 502.0,
-            right: 35.0,
-            child: Text(
-              "MKD/day",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black38,
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 532.0,
-            right: 120.0,
-            child: Text(
-              "1.000",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black38,
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 532.0,
-            right: 72.0,
-            child: Text(
-              "MKD",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black38,
-              ),
-            ),
-          ),
-          Positioned(
-            width: 300.0,
-            height: 60.0,
-            top: 600.0,
-            left: 80.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              ),
-              padding: const EdgeInsets.all(16.0),
-            ),
-          ),
-          Positioned(
-            top: 615.0,
-            left: 130.0,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, "/addPickUpAddress");
-              },
-              child: Text(
-                "Checkout - ",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 615.0,
-            left: 230.0,
-            child: Text(
-              "3.000",
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          const Positioned(
-            top: 615.0,
-            left: 285.0,
-            child: Text(
-              "MKD",
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 15.0,
-            left: 42.0,
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back_ios,
-                  color: Colors.white, size: 36.0),
-            ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ));
   }
 }

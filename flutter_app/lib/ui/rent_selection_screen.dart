@@ -11,7 +11,7 @@ class RentSelectionScreen extends StatefulWidget {
 
 class _RentSelectionScreenState extends State<RentSelectionScreen> {
   DateTime? selectedDate;
-  String startingFromDateInfo="";
+  String startingFromDateInfo = "";
   int dayCount = 0;
   bool driverSelected = false;
   bool babySitSelected = false;
@@ -34,9 +34,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
           startingFromDateInfo = "Today";
         } else if (isTomorrow(picked)) {
           startingFromDateInfo = "Tomorrow";
-        }
-        else{
-          startingFromDateInfo="";
+        } else {
+          startingFromDateInfo = "";
         }
       });
     } else {
@@ -47,15 +46,18 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
     }
   }
 
-
   bool isToday(DateTime date) {
     final today = DateTime.now();
-    return date.year == today.year && date.month == today.month && date.day == today.day;
+    return date.year == today.year &&
+        date.month == today.month &&
+        date.day == today.day;
   }
 
   bool isTomorrow(DateTime date) {
     final tomorrow = DateTime.now().add(const Duration(days: 1));
-    return date.year == tomorrow.year && date.month == tomorrow.month && date.day == tomorrow.day;
+    return date.year == tomorrow.year &&
+        date.month == tomorrow.month &&
+        date.day == tomorrow.day;
   }
 
   void _addDay() {
@@ -264,10 +266,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                 icon: const Icon(
                   Icons.remove,
                   color: Colors.black38,
-                  size:40.0,
-                )
-
-            ),
+                  size: 40.0,
+                )),
           ),
           Positioned(
             top: 438.0,
@@ -289,7 +289,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
               icon: const Icon(
                 Icons.add,
                 color: Colors.black38,
-                size:40.0,
+                size: 40.0,
               ),
             ),
           ),
@@ -321,8 +321,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                   color: Colors.black38,
                   fontWeight: FontWeight.w400,
                 ),
-              )
-          ),
+              )),
           const Positioned(
               top: 532.0,
               left: 110.0,
@@ -333,8 +332,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                   color: Colors.black38,
                   fontWeight: FontWeight.w400,
                 ),
-              )
-          ),
+              )),
           const Positioned(
             top: 502.0,
             right: 120.0,
@@ -402,9 +400,9 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
           ),
           Positioned(
             top: 615.0,
-            left:130.0,
+            left: 130.0,
             child: ElevatedButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.pushNamed(context, "/addPickUpAddress");
               },
               child: Text(
@@ -419,7 +417,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
           ),
           const Positioned(
             top: 615.0,
-            left:230.0,
+            left: 230.0,
             child: Text(
               "3.000",
               style: TextStyle(
@@ -431,7 +429,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
           ),
           const Positioned(
             top: 615.0,
-            left:285.0,
+            left: 285.0,
             child: Text(
               "MKD",
               style: TextStyle(
@@ -448,7 +446,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 36.0),
+              icon: const Icon(Icons.arrow_back_ios,
+                  color: Colors.white, size: 36.0),
             ),
           ),
         ],

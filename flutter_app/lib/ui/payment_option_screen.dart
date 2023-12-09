@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/shadow_button.dart';
 
+import 'address_container.dart';
 import 'appbar.dart';
-import 'button.dart';
 
 class PaymentOptionScreen extends StatefulWidget {
   const PaymentOptionScreen({super.key});
@@ -29,246 +30,275 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
   Widget build(BuildContext context) {
     double maxWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: CustomAppBar(title: "Payment Option"),
-      body: Container(
-        color: Colors.grey.shade100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 390,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade100),
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Agree to our ',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  //todo: terms and conditions link, or screen, or popup with button OK
-                                  // Navigator.push(
-                                  //   context,
-                                  //
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => TermsAndConditionsScreen(),
-                                  //   ),
-                                  // );
-                                },
-                                child: Text(
-                                  'Terms and conditions',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                              ),
-                              onPressed:
-                                  () {}, //todo: onclick change button text to -> agreed
-                              child: const Text(
-                                "Agree",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    color: Colors.white,
-                    width: 390,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Choose your payment method:",
-                              style: TextStyle(fontSize: 18)),
-                        ),
-                        RadioListTile(
-                          activeColor: Colors.blue,
-                          value: 1,
-                          groupValue: selectedRadio,
-                          title: Text('Debit/Credit Card'),
-                          onChanged: (val) {
-                            setSelectedRadio(val!);
-                          },
-                        ),
-                        RadioListTile(
-                          activeColor: Colors.blue,
-                          value: 2,
-                          groupValue: selectedRadio,
-                          title: Text('Netbanking'),
-                          onChanged: (val) {
-                            setSelectedRadio(val!);
-                          },
-                        ),
-                        RadioListTile(
-                          activeColor: Colors.blue,
-                          value: 3,
-                          groupValue: selectedRadio,
-                          title: Text('Stripe'),
-                          onChanged: (val) {
-                            setSelectedRadio(val!);
-                          },
-                        ),
-                        RadioListTile(
-                          activeColor: Colors.blue,
-                          value: 4,
-                          groupValue: selectedRadio,
-                          title: Text('Wallet'),
-                          onChanged: (val) {
-                            setSelectedRadio(val!);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+      appBar: const CustomAppBar(title: "Payment Option"),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 15,
+                  spreadRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+                const BoxShadow(
+                  color: Colors.white,
+                  blurRadius: 15,
+                  spreadRadius: 15,
+                  offset: Offset(0, 3),
+                ),
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 15,
+                  spreadRadius: 10,
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
-            Container(
-              color: Colors.white,
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(14.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Your PickUp Address",
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Text(
+                          'Agree to our ',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            //todo: terms and conditions link, or screen, or popup with button OK
+                            // Navigator.push(
+                            //   context,
+                            //
+                            //   MaterialPageRoute(
+                            //     builder: (context) => TermsAndConditionsScreen(),
+                            //   ),
+                            // );
+                          },
+                          child: const Text(
+                            'Terms and conditions',
                             style: TextStyle(
                               fontSize: 16,
+                              color: Colors.blue,
                             ),
                           ),
-                          Text(
-                            "City, Country", //todo: city,contry map from previous screen
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 14.0),
-                    child: Align(
-                      alignment: Alignment.centerRight,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                         ),
                         onPressed:
-                            () {}, //todo: back to before screen to change or new screen appears when clicks
-                        child: Text(
-                          "Change",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                            () {}, //todo: onclick change button text to -> agreed
+                        child: const Text(
+                          "Agree",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                )
+              ],
             ),
-            Row(
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                color: Colors.white,
+                width: double.infinity,
+                padding: const EdgeInsets.only(top: 15, left: 20, bottom: 10),
+                margin: const EdgeInsets.only(bottom: 15),
+                child: const Text("Choose your payment method:",
+                    style: TextStyle(fontSize: 18)),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 15,
+                      spreadRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                    const BoxShadow(
+                      color: Colors.white,
+                      blurRadius: 15,
+                      spreadRadius: 15,
+                      offset: Offset(0, 3),
+                    ),
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 15,
+                      spreadRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    RadioListTile(
+                      activeColor: Colors.blue,
+                      value: 1,
+                      groupValue: selectedRadio,
+                      title: const Text('Debit/Credit Card'),
+                      onChanged: (val) {
+                        setSelectedRadio(val!);
+                      },
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              top: BorderSide(color: Colors.grey, width: 0.4))),
+                      child: RadioListTile(
+                        activeColor: Colors.blue,
+                        value: 2,
+                        groupValue: selectedRadio,
+                        title: const Text('Netbanking'),
+                        onChanged: (val) {
+                          setSelectedRadio(val!);
+                        },
+                      ),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                        top: BorderSide(color: Colors.grey, width: 0.5),
+                      )),
+                      child: RadioListTile(
+                        activeColor: Colors.blue,
+                        value: 3,
+                        groupValue: selectedRadio,
+                        title: const Text('Stripe'),
+                        onChanged: (val) {
+                          setSelectedRadio(val!);
+                        },
+                      ),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                        top: BorderSide(color: Colors.grey, width: 0.5),
+                      )),
+                      child: RadioListTile(
+                        activeColor: Colors.blue,
+                        value: 4,
+                        groupValue: selectedRadio,
+                        title: const Text('Wallet'),
+                        onChanged: (val) {
+                          setSelectedRadio(val!);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          buildAddressContainer(context, 0),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 15,
+                  spreadRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+                const BoxShadow(
+                  color: Colors.white,
+                  blurRadius: 15,
+                  spreadRadius: 15,
+                  offset: Offset(0, 3),
+                ),
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 15,
+                  spreadRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
               children: [
                 Container(
                   color: Colors.white,
                   width: maxWidth,
-                  height: 100,
-                  child: const Padding(
-                    padding: EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Price Details",
+                  padding: const EdgeInsets.all(14),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Price Details",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Price (1 item)",
-                            ),
-                            Text("3000 MKD"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Delivery Fee",
-                            ),
-                            Text("600 MKD"),
-                          ],
-                        ),
-                      ],
-                    ),
+                              fontSize: 22, fontWeight: FontWeight.w500)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Price (1 item)",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            "3000 MKD",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Delivery Fee",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            "600 MKD",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                )
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                      border: const Border(
+                          top: BorderSide(color: Colors.grey, width: 0.5))),
+                  padding: const EdgeInsets.only(
+                      bottom: 14, left: 14, right: 14, top: 10),
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Total Amount",
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "3600MKD",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-            Container(
-              color: Colors.white,
-              child: const Padding(
-                padding: EdgeInsets.all(14.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Total Amount",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "3600MKD",
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const BlueButton(text: "Checkout", route: "/payment")
-          ],
-        ),
+          ),
+          shadowButton("Checkout", "/payment")
+        ],
       ),
     );
   }

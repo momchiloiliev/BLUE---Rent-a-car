@@ -108,16 +108,6 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
         ),
         body: Stack(
           children: [
-            Positioned(
-              left: 110.0,
-              top: 1.0,
-              child: Image(
-                image: AssetImage("images/ford.png"),
-                width: 380.0,
-                height: 350.0,
-                fit: BoxFit.fitWidth,
-              ),
-            ),
             Column(
               children: [
                 Row(
@@ -529,6 +519,16 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                   ],
                 ),
               ],
+            ),
+            Positioned(
+              left: 170.0,
+              top: 1.0,
+              child: Image(
+                image: AssetImage("images/ford.png"),
+                width: 300.0,
+                height: 300.0,
+                fit: BoxFit.fitWidth,
+              ),
             ),
           ],
         ));

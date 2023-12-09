@@ -68,11 +68,10 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                                   // );
                                 },
                                 child: Text(
-                                  'terms and conditions',
+                                  'Terms and conditions',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.blue,
-                                    decoration: TextDecoration.underline,
                                   ),
                                 ),
                               ),
@@ -113,7 +112,8 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("Choose your payment method:", style:TextStyle(fontSize: 18)),
+                          child: Text("Choose your payment method:",
+                              style: TextStyle(fontSize: 18)),
                         ),
                         RadioListTile(
                           activeColor: Colors.blue,
@@ -226,14 +226,18 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Price (1 item)",),
+                            Text(
+                              "Price (1 item)",
+                            ),
                             Text("3000 MKD"),
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Delivery Fee",),
+                            Text(
+                              "Delivery Fee",
+                            ),
                             Text("600 MKD"),
                           ],
                         ),
@@ -244,15 +248,16 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
               ],
             ),
             Container(
-              color:Colors.white,
+              color: Colors.white,
               child: const Padding(
-                padding:  EdgeInsets.all(14.0),
-                child:  Row(
+                padding: EdgeInsets.all(14.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Total Amount",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "3600MKD",

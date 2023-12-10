@@ -54,7 +54,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ),
 
       home: Scaffold(
-        appBar: const CustomAppBar(title: "Payment"),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Payment',
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: Colors.blue,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         resizeToAvoidBottomInset: false,
         body: Builder(
           builder: (BuildContext context) {
@@ -65,7 +84,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   children: <Widget>[
                     CreditCardWidget(
                       enableFloatingCard: useFloatingAnimation,
-                      glassmorphismConfig: _getGlassmorphismConfig(),
+                      // glassmorphismConfig: _getGlassmorphismConfig(),
                       cardNumber: cardNumber,
                       expiryDate: expiryDate,
                       cardHolderName: cardHolderName,

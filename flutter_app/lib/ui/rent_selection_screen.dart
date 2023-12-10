@@ -142,7 +142,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                       child: Container(
                         width: 350,
                         height: 580,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xFFE5E9F2),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(25.0),
@@ -150,7 +150,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                           ),
                         ),
                         child: Column(children: [
-                          Row(
+                          const Row(
                             children: [
                               Expanded(
                                 child: Column(
@@ -170,7 +170,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                               ),
                             ],
                           ),
-                          Row(
+                          const Row(
                             children: [
                               Column(
                                 children: [
@@ -207,7 +207,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
-                                        side: BorderSide(
+                                        side: const BorderSide(
                                           color: Colors.grey,
                                           width: 2.0,
                                         ),
@@ -219,28 +219,28 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                           selectedDate != null
                                               ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
                                               : "Starting from",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black38,
                                           ),
                                         ),
-                                        Spacer(),
+                                        const Spacer(),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(left: 8.0),
                                           child: Text(
                                             startingFromDateInfo,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.w400,
                                               color: Colors.black,
                                             ),
                                           ),
                                         ),
-                                        Spacer(),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
+                                        const Spacer(),
+                                        const Padding(
+                                          padding: EdgeInsets.only(
                                               bottom: 2.0),
                                           child: Icon(
                                             Icons.calendar_month,
@@ -265,7 +265,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Days",
                                         style: TextStyle(
                                           fontSize: 28.0,
@@ -277,13 +277,13 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                         children: [
                                           Text(
                                             carPrice.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black38,
                                             ),
                                           ),
-                                          Text(
+                                          const Text(
                                             " MKD/day",
                                             style: TextStyle(
                                               fontSize: 20.0,
@@ -364,8 +364,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       visualDensity: VisualDensity.comfortable,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10.0),
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 10.0),
                                     child: Row(
                                       children: [
                                         Text(
@@ -388,13 +388,13 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                   children: [
                                     Text(
                                       driverIncludedPrice.toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.black,
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       " MKD/day",
                                       style: TextStyle(
                                         fontSize: 20.0,
@@ -426,8 +426,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       visualDensity: VisualDensity.comfortable,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 1),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 1),
                                     child: Row(
                                       children: [
                                         Text(
@@ -450,13 +450,13 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                   children: [
                                     Text(
                                       babySeatIncludedPrice.toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.black,
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       " MKD",
                                       style: TextStyle(
                                         fontSize: 20.0,
@@ -487,7 +487,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
-                                        side: BorderSide(
+                                        side: const BorderSide(
                                           color: Colors.grey,
                                           width: 3.0,
                                         ),
@@ -498,9 +498,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Checkout - " +
-                                              checkoutSum.toString(),
-                                          style: TextStyle(
+                                          "Checkout - $checkoutSum",
+                                          style: const TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black38,
@@ -520,7 +519,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                 ),
               ],
             ),
-            Positioned(
+            const Positioned(
               left: 170.0,
               top: 1.0,
               child: Image(

@@ -11,8 +11,7 @@ class Car {
   int fullTankKm;
   String typeFuel;
   String status;
-  List<Reservation> reservations;
-  Location location;
+  String imageLink;
 
   Car(
       {required this.id,
@@ -23,6 +22,5 @@ class Car {
       required this.fullTankKm,
       required this.typeFuel,
       required this.status,
-      required this.reservations,
-      required this.location});
+      required this.imageLink});
 }

@@ -1,13 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CarCard extends StatefulWidget {
-  const CarCard({super.key});
+class CarCard extends StatelessWidget {
+  const CarCard({super.key, required this.snapshot});
+  final QueryDocumentSnapshot<Map<String, dynamic>> snapshot;
 
-  @override
-  State<CarCard> createState() => _CarCardState();
-}
-
-class _CarCardState extends State<CarCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,13 +19,13 @@ class _CarCardState extends State<CarCard> {
         children: [
           Transform.translate(
             offset: const Offset(30, -30),
-            child: const Image(
+            child: Image.network(
+              snapshot.get('imageLink'),
               width: 300,
               height: 200,
-              image: AssetImage("images/bmw_amg.png"),
             ),
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -35,7 +33,7 @@ class _CarCardState extends State<CarCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "BMW GLA45",
+                    snapshot.get('model'),
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 25,
@@ -43,7 +41,7 @@ class _CarCardState extends State<CarCard> {
                     ),
                   ),
                   Text(
-                    "3000MKD/day",
+                    "${snapshot.get('price') * 50}MKD/day",
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 15,
@@ -76,7 +74,7 @@ class _CarCardState extends State<CarCard> {
                     color: Colors.blueAccent,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.only(left: 15.0, top: 5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +85,7 @@ class _CarCardState extends State<CarCard> {
                           color: Colors.white,
                         ),
                         Text(
-                          '531 KM',
+                          '${snapshot.get('fullTankKm')} KM',
                           style: TextStyle(
                               fontFamily: "Avro",
                               fontSize: 16,
@@ -121,7 +119,7 @@ class _CarCardState extends State<CarCard> {
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(color: Colors.blueAccent),
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 6.0, top: 4.0),
                       child: Column(
                         children: [
@@ -140,7 +138,7 @@ class _CarCardState extends State<CarCard> {
                           Row(
                             children: [
                               Text(
-                                '5.6 sec',
+                                '${snapshot.get('launchControlKm')} sec',
                                 style: TextStyle(
                                     fontFamily: "Avro",
                                     fontSize: 19,
@@ -181,7 +179,7 @@ class _CarCardState extends State<CarCard> {
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(color: Colors.blueAccent),
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 6.0, top: 4.0),
                       child: Column(
                         children: [
@@ -200,7 +198,7 @@ class _CarCardState extends State<CarCard> {
                           Row(
                             children: [
                               Text(
-                                '416 HP',
+                                '${snapshot.get('horsePower')} HP',
                                 style: TextStyle(
                                     fontFamily: "Avro",
                                     fontSize: 19,
@@ -243,8 +241,8 @@ class _CarCardState extends State<CarCard> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   )),
-              child: const Text(
-                'Rent BMW GLA45',
+              child: Text(
+                'Rent ${snapshot.get('model')}',
                 style: TextStyle(fontFamily: "Arvo-Regular", fontSize: 15),
               ),
             ),

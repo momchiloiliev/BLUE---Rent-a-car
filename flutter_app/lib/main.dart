@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/add_pickup_address_screen.dart';
 import 'package:flutter_app/ui/brand_pick_screen.dart';
@@ -10,8 +11,14 @@ import 'package:flutter_app/ui/rent_selection_screen.dart';
 import 'package:flutter_app/ui/your_reservations_screen.dart';
 import 'package:flutter_app/ui/your_selection_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); // Initialize Firebase
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "878922015590",
+    "project_id": "blue---rentacar",
+    "storage_bucket": "blue---rentacar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878922015590:android:835c0cd111ce448ceb1ea7",
+        "android_client_info": {
+          "package_name": "com.example.first_flutter_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIO_6BGYWQ0_04tBVPJVNNtMtWzRynfSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878922015590:android:1e19caaf34280ca6eb1ea7",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIO_6BGYWQ0_04tBVPJVNNtMtWzRynfSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

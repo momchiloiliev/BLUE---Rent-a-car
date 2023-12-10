@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/car_card.dart';
 
@@ -15,6 +16,14 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
     "images/ford-logo.png",
     "images/mercedes-logo.png",
   ];
+
+  late Stream<QuerySnapshot<Map<String, dynamic>>> firestoreDb;
+
+  @override
+  void initState() {
+    super.initState();
+    firestoreDb = FirebaseFirestore.instance.collection("cars").snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,25 +96,37 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
 
   Widget _buildCarList() {
     return Container(
-      height: 580,
-      child: ListView.separated(
-        itemCount: 5,
-        scrollDirection: Axis.horizontal,
-        // physics: PageScrollPhysics(),
-        separatorBuilder: (context, index) => SizedBox(
-          width: 10,
-        ),
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Container(
-              margin: EdgeInsets.only(left: 23.0),
-              child: CarCard(),
-            );
-          } else
-            return CarCard();
-          // return CarCard();
-        },
-      ),
-    );
+        height: 580,
+        child: StreamBuilder(
+          stream: firestoreDb,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Text('No Data');
+            } else {
+              return ListView.separated(
+                itemCount: 5,
+                scrollDirection: Axis.horizontal,
+                // physics: PageScrollPhysics(),
+                separatorBuilder: (context, index) => SizedBox(
+                  width: 10,
+                ),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Container(
+                      margin: EdgeInsets.only(left: 23.0),
+                      child: CarCard(snapshot: snapshot.data!.docs[0]),
+                    );
+                  } else
+                    return CarCard(snapshot: snapshot.data!.docs[0]);
+                  // return CarCard();
+                },
+              );
+            }
+          },
+        ));
   }
 }

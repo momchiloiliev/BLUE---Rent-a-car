@@ -31,7 +31,9 @@ class MyApp extends StatelessWidget {
       home: const HomeScreen(),
       routes: {
         "/pickBrand": (context) => const BrandPickScreen(),
-        "/carList": (context) => const ListCarsScreen(),
+        "/carList": (context) {
+          return const ListCarsScreen();
+        },
         "/rentSelection": (context) => const RentSelectionScreen(),
         "/addPickUpAddress": (context) => const AddPickUpAddressScreen(),
         "/yourSelection": (context) => const YourSelectionScreen(),

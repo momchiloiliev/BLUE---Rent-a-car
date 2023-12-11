@@ -8,17 +8,20 @@ class BrandPickScreen extends StatefulWidget {
 }
 
 class _BrandPickScreenState extends State<BrandPickScreen> {
-  Map<int, Color> buttonColors = {
-    1: Colors.white,
-    2: Colors.white,
-    3: Colors.white,
-    4: Colors.white,
+  Map<String, Color> buttonColors = {
+    "Ford": Colors.white,
+    "BMW": Colors.white,
+    "Tesla": Colors.white,
+    "Mercedes": Colors.white,
   };
 
-  void changeColor(int index) {
+  late String brand;
+
+  void changeColor(String pickedBrand) {
     setState(() {
-      buttonColors
-          .updateAll((key, value) => key == index ? Colors.grey : Colors.white);
+      buttonColors.updateAll(
+          (key, value) => key == pickedBrand ? Colors.grey : Colors.white);
+      brand = pickedBrand;
     });
   }
 
@@ -53,8 +56,8 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildLogoButton("images/ford-logo.png", 1),
-                      buildLogoButton("images/bmw-logo.png", 2),
+                      buildLogoButton("images/ford-logo.png", "Ford"),
+                      buildLogoButton("images/bmw-logo.png", "BMW"),
                     ],
                   ),
                 ),
@@ -62,8 +65,8 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    buildLogoButton("images/tesla-logo.png", 3),
-                    buildLogoButton("images/mercedes-logo.png", 4),
+                    buildLogoButton("images/tesla-logo.png", "Tesla"),
+                    buildLogoButton("images/mercedes-logo.png", "Mercedes"),
                   ],
                 ),
               ],
@@ -72,7 +75,7 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
               padding: const EdgeInsets.only(bottom: 40),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/carList");
+                  Navigator.pushNamed(context, "/carList", arguments: brand);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent,
@@ -94,15 +97,15 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
     );
   }
 
-  Widget buildLogoButton(String imagePath, int index) {
+  Widget buildLogoButton(String imagePath, String pickedBrand) {
     return InkWell(
       onTap: () {
-        changeColor(index);
+        changeColor(pickedBrand);
       },
       child: Container(
         width: 100,
         height: 100,
-        decoration: BoxDecoration(color: buttonColors[index]),
+        decoration: BoxDecoration(color: buttonColors[pickedBrand]),
         child: Image(
           image: AssetImage(imagePath),
         ),

@@ -3,8 +3,9 @@ import "package:flutter/material.dart";
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CarCard extends StatelessWidget {
-  const CarCard({super.key, required this.snapshot});
+  const CarCard({super.key, required this.snapshot, required this.index});
   final QueryDocumentSnapshot<Map<String, dynamic>> snapshot;
+  final int index;
 
   @override
   Widget build(BuildContext context) {

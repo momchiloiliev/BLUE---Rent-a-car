@@ -18,6 +18,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
   ];
 
   late Stream<QuerySnapshot<Map<String, dynamic>>> firestoreDb;
+  late String brand = ModalRoute.of(context)!.settings.arguments.toString();
 
   @override
   void initState() {
@@ -70,6 +71,22 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
           return InkWell(
             onTap: () {
               // Implement action on image tap
+              setState(() {
+                switch (index) {
+                  case 0:
+                    brand = "BMW";
+                    break;
+                  case 1:
+                    brand = "Tesla";
+                    break;
+                  case 2:
+                    brand = "Ford";
+                    break;
+                  case 3:
+                    brand = "Mercedes";
+                    break;
+                }
+              });
             },
             child: Image(
               image: AssetImage(images[index]),
@@ -96,37 +113,51 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
 
   Widget _buildCarList() {
     return Container(
-        height: 580,
-        child: StreamBuilder(
-          stream: firestoreDb,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Text('No Data');
-            } else {
-              return ListView.separated(
-                itemCount: 5,
-                scrollDirection: Axis.horizontal,
-                // physics: PageScrollPhysics(),
-                separatorBuilder: (context, index) => SizedBox(
-                  width: 10,
-                ),
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Container(
-                      margin: EdgeInsets.only(left: 23.0),
-                      child: CarCard(snapshot: snapshot.data!.docs[0]),
-                    );
-                  } else
-                    return CarCard(snapshot: snapshot.data!.docs[0]);
-                  // return CarCard();
-                },
-              );
+      height: 580,
+      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: firestoreDb,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Text('No Data');
+          } else {
+            // Filter cars based on brand
+            List<QueryDocumentSnapshot<Map<String, dynamic>>> filteredCars =
+                snapshot.data!.docs
+                    .where((car) => car['brand'] == brand)
+                    .toList();
+
+            if (filteredCars.isEmpty) {
+              return Text('No cars found for this brand');
             }
-          },
-        ));
+
+            return ListView.separated(
+              itemCount: filteredCars.length,
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) => SizedBox(
+                width: 10,
+              ),
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Container(
+                      margin: EdgeInsets.only(left: 23.0),
+                      child: CarCard(
+                        snapshot: filteredCars[index],
+                        index: index,
+                      ));
+                } else
+                  return CarCard(
+                    snapshot: filteredCars[index],
+                    index: index,
+                  );
+              },
+            );
+          }
+        },
+      ),
+    );
   }
 }

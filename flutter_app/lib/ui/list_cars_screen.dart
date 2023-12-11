@@ -147,11 +147,13 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
                       child: CarCard(
                         snapshot: filteredCars[index],
                         index: index,
+                        docId: filteredCars[index].id,
                       ));
                 } else
                   return CarCard(
                     snapshot: filteredCars[index],
                     index: index,
+                    docId: filteredCars[index].id,
                   );
               },
             );

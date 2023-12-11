@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../model/car.dart';
+
 class RentSelectionScreen extends StatefulWidget {
   const RentSelectionScreen({Key? key}) : super(key: key);
 
@@ -11,6 +13,7 @@ class RentSelectionScreen extends StatefulWidget {
 }
 
 class _RentSelectionScreenState extends State<RentSelectionScreen> {
+  late Car car;
   DateTime? selectedDate;
   String startingFromDateInfo = "Today";
   late int carPrice;
@@ -19,11 +22,23 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   bool isBabySeatSelected = false;
   int driverIncludedPrice = 3000;
   int babySeatIncludedPrice = 1000;
-  int checkoutSum = 0;
+  late int checkoutSum;
 
-  late QueryDocumentSnapshot<Map<String, dynamic>> snapshot =
-      ModalRoute.of(context)!.settings.arguments
-          as QueryDocumentSnapshot<Map<String, dynamic>>;
+  bool isCarInitialized() {
+    return car != null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      car = ModalRoute.of(context)!.settings.arguments as Car;
+      // setState to trigger a rebuild after initialization
+      setState(() {
+        checkoutSum = car.price * 50;
+      });
+    });
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime now = DateTime.now();
@@ -87,7 +102,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
 
   void _calculateCheckoutSum() async {
     setState(() {
-      int daysTotal = snapshot.get('price') * 50 * dayCount;
+      int daysTotal = car!.price * 50 * dayCount;
       int driverTotal = isDriverSelected ? driverIncludedPrice * dayCount : 0;
       int babySeatTotal = isBabySeatSelected ? babySeatIncludedPrice : 0;
       checkoutSum = daysTotal + driverTotal + babySeatTotal;
@@ -95,13 +110,14 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _calculateCheckoutSum(); // Call the function when the widget is first created
-  }
-
-  @override
   Widget build(BuildContext context) {
+    if (!isCarInitialized()) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
@@ -182,7 +198,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                     padding:
                                         EdgeInsets.only(left: 35.0, top: 40.0),
                                     child: Text(
-                                      snapshot.get('model'),
+                                      car!.model,
                                       style: TextStyle(
                                         fontSize: 30.0,
                                         fontWeight: FontWeight.bold,
@@ -279,7 +295,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            "${snapshot.get('price') * 50}",
+                                            "${car!.price * 50}",
                                             style: const TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.w500,
@@ -527,7 +543,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
               left: 170.0,
               top: 1.0,
               child: Image.network(
-                snapshot.get('imageLink'),
+                car!.imageLink,
                 width: 300.0,
                 height: 300.0,
                 fit: BoxFit.fitWidth,

@@ -3,14 +3,14 @@ import 'package:flutter_app/model/reservation.dart';
 import 'location.dart';
 
 class Car {
-  int id;
+  String id;
   String model;
-  double price;
+  int price;
   int horsePower;
   double launchControlKm;
   int fullTankKm;
   String typeFuel;
-  String status;
+  bool reserved;
   String imageLink;
 
   Car(
@@ -21,6 +21,6 @@ class Car {
       required this.launchControlKm,
       required this.fullTankKm,
       required this.typeFuel,
-      required this.status,
+      required this.reserved,
       required this.imageLink});
 }

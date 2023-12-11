@@ -1,14 +1,32 @@
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app/model/car.dart';
 
 class CarCard extends StatelessWidget {
-  const CarCard({super.key, required this.snapshot, required this.index});
+  const CarCard(
+      {super.key,
+      required this.snapshot,
+      required this.index,
+      required this.docId});
   final QueryDocumentSnapshot<Map<String, dynamic>> snapshot;
   final int index;
+  final String docId;
 
   @override
   Widget build(BuildContext context) {
+    Car car = Car(
+        id: docId,
+        model: snapshot.get('model'),
+        price: snapshot.get('price'),
+        horsePower: snapshot.get('horsePower'),
+        launchControlKm:
+            double.parse(snapshot.get('launchControlKm').toString()),
+        fullTankKm: snapshot.get('fullTankKm'),
+        typeFuel: snapshot.get('typeFuel'),
+        reserved: snapshot.get('reserved'),
+        imageLink: snapshot.get('imageLink'));
+
     return Container(
       margin: const EdgeInsets.only(right: 25),
       decoration: BoxDecoration(
@@ -21,7 +39,7 @@ class CarCard extends StatelessWidget {
           Transform.translate(
             offset: const Offset(30, -30),
             child: Image.network(
-              snapshot.get('imageLink'),
+              car.imageLink,
               width: 300,
               height: 200,
             ),
@@ -34,7 +52,7 @@ class CarCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    snapshot.get('model'),
+                    car.model,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 25,
@@ -42,7 +60,7 @@ class CarCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "${snapshot.get('price') * 50}MKD/day",
+                    "${car.price * 50}MKD/day",
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 15,
@@ -57,7 +75,9 @@ class CarCard extends StatelessWidget {
               Column(
                 children: [
                   Icon(
-                    Icons.water_drop,
+                    car.typeFuel == "Diesel"
+                        ? Icons.water_drop
+                        : Icons.electric_bolt,
                     color: Colors.blue,
                   ),
                 ],
@@ -86,7 +106,7 @@ class CarCard extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          '${snapshot.get('fullTankKm')} KM',
+                          '${car.fullTankKm} KM',
                           style: TextStyle(
                               fontFamily: "Avro",
                               fontSize: 16,
@@ -139,7 +159,7 @@ class CarCard extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                '${snapshot.get('launchControlKm')} sec',
+                                '${car.launchControlKm} sec',
                                 style: TextStyle(
                                     fontFamily: "Avro",
                                     fontSize: 19,
@@ -199,7 +219,7 @@ class CarCard extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                '${snapshot.get('horsePower')} HP',
+                                '${car.horsePower} HP',
                                 style: TextStyle(
                                     fontFamily: "Avro",
                                     fontSize: 19,
@@ -233,9 +253,7 @@ class CarCard extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 20, top: 20),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/rentSelection",
-                    arguments: snapshot
-                        as QueryDocumentSnapshot<Map<String, dynamic>>);
+                Navigator.pushNamed(context, "/rentSelection", arguments: car);
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent,

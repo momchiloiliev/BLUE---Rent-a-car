@@ -15,7 +15,7 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
     "Mercedes": Colors.white,
   };
 
-  late String brand;
+  late String brand = "Ford";
 
   void changeColor(String pickedBrand) {
     setState(() {

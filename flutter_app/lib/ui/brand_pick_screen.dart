@@ -8,71 +8,60 @@ class BrandPickScreen extends StatefulWidget {
 }
 
 class _BrandPickScreenState extends State<BrandPickScreen> {
-  Map<String, Color> buttonColors = {
-    "Ford": Colors.white,
-    "BMW": Colors.white,
-    "Tesla": Colors.white,
-    "Mercedes": Colors.white,
-  };
-
   late String brand = "Ford";
+  bool isSelected = false;
 
-  void changeColor(String pickedBrand) {
-    setState(() {
-      buttonColors.updateAll(
-          (key, value) => key == pickedBrand ? Colors.grey : Colors.white);
-      brand = pickedBrand;
-    });
-  }
+  Map<String, String> brandLogos = {
+    "Ford": "images/ford-logo.png",
+    "BMW": "images/bmw-logo.png",
+    "Tesla": "images/tesla-logo.png",
+    "Mercedes": "images/mercedes-logo.png",
+  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40, bottom: 0),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                height: MediaQuery.of(context).size.width * 0.37,
-                child: const Text(
-                  "Pick your preferred brand",
-                  style: TextStyle(
-                    fontSize: 37,
-                    fontFamily: "Arvo-Bold",
-                    color: Colors.lightBlueAccent,
-                  ),
-                ),
-              ),
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buildLogoButton("images/ford-logo.png", "Ford"),
-                      buildLogoButton("images/bmw-logo.png", "BMW"),
-                    ],
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buildLogoButton("images/tesla-logo.png", "Tesla"),
-                    buildLogoButton("images/mercedes-logo.png", "Mercedes"),
-                  ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    height: MediaQuery.of(context).size.width * 0.37,
+                    child: const Text(
+                      "Pick your preferred brand",
+                      style: TextStyle(
+                        fontSize: 38,
+                        fontFamily: "Arvo-Bold",
+                        color: Colors.lightBlueAccent,
+                      ),
+                    ),
                 ),
               ],
             ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildLogoButton("images/ford-logo.png", "Ford"),
+                buildLogoButton("images/bmw-logo.png", "BMW"),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildLogoButton("images/tesla-logo.png", "Tesla"),
+                buildLogoButton("images/mercedes-logo.png", "Mercedes"),
+              ],
+            ),
+            SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(bottom: 40),
+              padding: const EdgeInsets.only(top:38.0),
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, "/carList", arguments: brand);
@@ -90,7 +79,7 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
                   style: TextStyle(fontFamily: "Arvo-Regular", fontSize: 20),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -100,14 +89,42 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
   Widget buildLogoButton(String imagePath, String pickedBrand) {
     return InkWell(
       onTap: () {
-        changeColor(pickedBrand);
+        setState(() {
+          brand = pickedBrand;
+          isSelected = true;
+        });
       },
-      child: Container(
-        width: 100,
-        height: 100,
-        decoration: BoxDecoration(color: buttonColors[pickedBrand]),
-        child: Image(
-          image: AssetImage(imagePath),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        width: 150,
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: brand == pickedBrand ? Colors.lightBlue : Colors.transparent,
+            width: 4,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              width: isSelected ? 80 : 80,
+              height: isSelected ? 80 : 80,
+              child: Image(
+                image: AssetImage(imagePath),
+                fit: BoxFit.contain,
+              ),
+            ),
+            if (brand == pickedBrand && isSelected)
+              Image.asset(
+                "images/check-mark.png",
+                width: 22,
+                height: 22,
+                color: Colors.blue,
+              ),
+          ],
         ),
       ),
     );

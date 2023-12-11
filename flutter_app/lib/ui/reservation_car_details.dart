@@ -50,11 +50,11 @@ Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("BMW GLA45",
+                      const Text("BMW AMG",
                           style:
                               TextStyle(fontSize: 16, color: Colors.black54)),
-                      const Text(
-                        "3000MKD/per day",
+                      Text(
+                        "3000/per day",
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

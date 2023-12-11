@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/your_selection_screen.dart';
 
 import '../model/car.dart';
 
@@ -499,7 +500,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       Navigator.pushNamed(
-                                          context, "/addPickUpAddress");
+                                          context, "/addPickUpAddress"
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.grey,

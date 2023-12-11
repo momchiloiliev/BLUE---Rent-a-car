@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class RentSelectionScreen extends StatefulWidget {
@@ -11,14 +12,18 @@ class RentSelectionScreen extends StatefulWidget {
 
 class _RentSelectionScreenState extends State<RentSelectionScreen> {
   DateTime? selectedDate;
-  String startingFromDateInfo = "";
+  String startingFromDateInfo = "Today";
+  late int carPrice;
   int dayCount = 1;
   bool isDriverSelected = false;
   bool isBabySeatSelected = false;
-  int carPrice = 3000;
   int driverIncludedPrice = 3000;
   int babySeatIncludedPrice = 1000;
   int checkoutSum = 0;
+
+  late QueryDocumentSnapshot<Map<String, dynamic>> snapshot =
+      ModalRoute.of(context)!.settings.arguments
+          as QueryDocumentSnapshot<Map<String, dynamic>>;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime now = DateTime.now();
@@ -72,7 +77,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   }
 
   void _removeDay() {
-    if (dayCount >= 1) {
+    if (dayCount > 1) {
       setState(() {
         dayCount--;
         _calculateCheckoutSum();
@@ -80,12 +85,11 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
     }
   }
 
-  void _calculateCheckoutSum() {
-    int daysTotal = carPrice * dayCount;
-    int driverTotal = isDriverSelected ? driverIncludedPrice * dayCount : 0;
-    int babySeatTotal = isBabySeatSelected ? babySeatIncludedPrice : 0;
-
+  void _calculateCheckoutSum() async {
     setState(() {
+      int daysTotal = snapshot.get('price') * 50 * dayCount;
+      int driverTotal = isDriverSelected ? driverIncludedPrice * dayCount : 0;
+      int babySeatTotal = isBabySeatSelected ? babySeatIncludedPrice : 0;
       checkoutSum = daysTotal + driverTotal + babySeatTotal;
     });
   }
@@ -170,7 +174,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                               ),
                             ],
                           ),
-                          const Row(
+                          Row(
                             children: [
                               Column(
                                 children: [
@@ -178,7 +182,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                     padding:
                                         EdgeInsets.only(left: 35.0, top: 40.0),
                                     child: Text(
-                                      "Edge ST",
+                                      snapshot.get('model'),
                                       style: TextStyle(
                                         fontSize: 30.0,
                                         fontWeight: FontWeight.bold,
@@ -240,8 +244,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                         ),
                                         const Spacer(),
                                         const Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: 2.0),
+                                          padding: EdgeInsets.only(bottom: 2.0),
                                           child: Icon(
                                             Icons.calendar_month,
                                             color: Colors.black,
@@ -276,7 +279,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            carPrice.toString(),
+                                            "${snapshot.get('price') * 50}",
                                             style: const TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.w500,
@@ -479,7 +482,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                   height: 50,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context, "/addPickUpAddress");
+                                      Navigator.pushNamed(
+                                          context, "/addPickUpAddress");
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.grey,
@@ -519,11 +523,11 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                 ),
               ],
             ),
-            const Positioned(
+            Positioned(
               left: 170.0,
               top: 1.0,
-              child: Image(
-                image: AssetImage("images/ford.png"),
+              child: Image.network(
+                snapshot.get('imageLink'),
                 width: 300.0,
                 height: 300.0,
                 fit: BoxFit.fitWidth,

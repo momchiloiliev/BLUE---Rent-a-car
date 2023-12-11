@@ -34,7 +34,9 @@ class MyApp extends StatelessWidget {
         "/carList": (context) {
           return const ListCarsScreen();
         },
-        "/rentSelection": (context) => const RentSelectionScreen(),
+        "/rentSelection": (context) {
+          return const RentSelectionScreen();
+        },
         "/addPickUpAddress": (context) => const AddPickUpAddressScreen(),
         "/yourSelection": (context) => const YourSelectionScreen(),
         "/paymentOption": (context) => const PaymentOptionScreen(),

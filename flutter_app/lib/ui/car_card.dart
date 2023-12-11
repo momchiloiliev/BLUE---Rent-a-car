@@ -233,7 +233,9 @@ class CarCard extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 20, top: 20),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/rentSelection");
+                Navigator.pushNamed(context, "/rentSelection",
+                    arguments: snapshot
+                        as QueryDocumentSnapshot<Map<String, dynamic>>);
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent,

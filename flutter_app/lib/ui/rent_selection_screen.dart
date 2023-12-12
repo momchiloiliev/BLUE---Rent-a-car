@@ -16,7 +16,7 @@ class RentSelectionScreen extends StatefulWidget {
 
 class _RentSelectionScreenState extends State<RentSelectionScreen> {
   late Car car;
-  DateTime? selectedDate;
+  DateTime? selectedDate = DateTime.now();
   String startingFromDateInfo = "Today";
   late int carPrice;
   int dayCount = 1;

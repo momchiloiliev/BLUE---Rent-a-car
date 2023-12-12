@@ -8,7 +8,7 @@ class BrandPickScreen extends StatefulWidget {
 }
 
 class _BrandPickScreenState extends State<BrandPickScreen> {
-  late String brand = "Ford";
+  late String brand = "";
   bool isSelected = false;
 
   Map<String, String> brandLogos = {
@@ -27,19 +27,19 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    height: MediaQuery.of(context).size.width * 0.37,
-                    child: const Text(
-                      "Pick your preferred brand",
-                      style: TextStyle(
-                        fontSize: 38,
-                        fontFamily: "Arvo-Bold",
-                        color: Colors.lightBlueAccent,
-                      ),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  height: MediaQuery.of(context).size.width * 0.37,
+                  child: const Text(
+                    "Pick your preferred brand",
+                    style: TextStyle(
+                      fontSize: 38,
+                      fontFamily: "Arvo-Bold",
+                      color: Colors.lightBlueAccent,
                     ),
+                  ),
                 ),
               ],
             ),
@@ -61,10 +61,11 @@ class _BrandPickScreenState extends State<BrandPickScreen> {
             ),
             SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(top:38.0),
+              padding: const EdgeInsets.only(top: 38.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/carList", arguments: brand);
+                  Navigator.pushNamed(context, "/carList",
+                      arguments: brand == "" ? "Ford" : brand);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent,

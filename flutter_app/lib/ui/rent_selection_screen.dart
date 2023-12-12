@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/model/reservation.dart';
 import 'package:flutter_app/ui/your_selection_screen.dart';
 
 import '../model/car.dart';
@@ -32,7 +33,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       car = ModalRoute.of(context)!.settings.arguments as Car;
       // setState to trigger a rebuild after initialization
       setState(() {
@@ -103,7 +104,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
 
   void _calculateCheckoutSum() async {
     setState(() {
-      int daysTotal = car!.price * 50 * dayCount;
+      int daysTotal = car.price * 50 * dayCount;
       int driverTotal = isDriverSelected ? driverIncludedPrice * dayCount : 0;
       int babySeatTotal = isBabySeatSelected ? babySeatIncludedPrice : 0;
       checkoutSum = daysTotal + driverTotal + babySeatTotal;
@@ -113,7 +114,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     if (!isCarInitialized()) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -196,11 +197,11 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                               Column(
                                 children: [
                                   Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 35.0, top: 40.0),
+                                    padding: const EdgeInsets.only(
+                                        left: 35.0, top: 40.0),
                                     child: Text(
-                                      car!.model,
-                                      style: TextStyle(
+                                      car.model,
+                                      style: const TextStyle(
                                         fontSize: 30.0,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
@@ -296,7 +297,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            "${car!.price * 50}",
+                                            "${car.price * 50}",
                                             style: const TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.w500,
@@ -499,9 +500,24 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                   height: 50,
                                   child: ElevatedButton(
                                     onPressed: () {
+                                      Reservation reservation = Reservation(
+                                          car.id,
+                                          dayCount,
+                                          isDriverSelected,
+                                          isBabySeatSelected,
+                                          checkoutSum,
+                                          selectedDate ?? DateTime.now(),
+                                          selectedDate!
+                                              .add(Duration(days: dayCount)),
+                                          "",
+                                          "",
+                                          "",
+                                          "",
+                                          "");
+
                                       Navigator.pushNamed(
-                                          context, "/addPickUpAddress"
-                                      );
+                                          context, "/addPickUpAddress",
+                                          arguments: [car, reservation]);
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.grey,
@@ -545,7 +561,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
               left: 170.0,
               top: 1.0,
               child: Image.network(
-                car!.imageLink,
+                car.imageLink,
                 width: 300.0,
                 height: 300.0,
                 fit: BoxFit.fitWidth,

@@ -7,6 +7,8 @@ import 'appbar.dart';
 class PaymentOptionScreen extends StatefulWidget {
   const PaymentOptionScreen({super.key});
 
+
+
   @override
   State<PaymentOptionScreen> createState() => _PaymentOptionScreenState();
 }
@@ -26,13 +28,58 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
     });
   }
 
+  String buttonText = 'Agree';
+  Color buttonColor = Colors.blue;
+  TextStyle textStyle = TextStyle(color: Colors.white);
+  bool isAgreed = false;
+  String errorMessage="";
+  int selectedOption = 0;
+  String errorMessagePayment="";
+
+  void changeButton() {
+    setState(() {
+      if (buttonText == 'Agree') {
+        buttonText = 'Agreed';
+        buttonColor = Colors.lightBlueAccent;
+        textStyle = TextStyle(color: Colors.white);
+        isAgreed = true;
+        errorMessage = "";
+      } else {
+        buttonText = 'Agree';
+        buttonColor = Colors.blue;
+        textStyle = TextStyle(color: Colors.white);
+        isAgreed = false;
+      }
+    });
+  }
+
+  void checkAgreement() {
+    setState(() {
+      if (!isAgreed) {
+        errorMessage = 'You must agree the terms and condtions!';
+      } else {
+        errorMessage = '';
+        if(selectedOption == 1){
+          Navigator.pushNamed(context, "/payment");
+        }
+        else if(selectedOption == 2){
+          Navigator.pushNamed(context, "/orderConfirmed");
+        }
+        else{
+          errorMessagePayment = 'You must select payment method!';
+        }
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double maxWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: const CustomAppBar(title: "Payment Option"),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             padding: const EdgeInsets.all(8),
@@ -61,6 +108,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
               ],
             ),
             child: Row(
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,16 +144,24 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: buttonColor,
                         ),
-                        onPressed:
-                            () {}, //todo: onclick change button text to -> agreed
-                        child: const Text(
-                          "Agree",
-                          style: TextStyle(color: Colors.white),
+                        onPressed: () {
+                          changeButton();
+                        }, //todo: onclick change button text to -> agreed ->done
+
+                        child: Text(
+                          buttonText,
+                          style: textStyle,
                         ),
                       ),
                     ),
+                    SizedBox(height: 10,),
+                    if(errorMessage.isNotEmpty)
+                      Text(
+                        errorMessage,
+                        style: TextStyle(color: Colors.red, fontSize: 15,),
+                      ),
                   ],
                 )
               ],
@@ -155,108 +211,50 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                       title: const Text('Debit/Credit Card'),
                       onChanged: (val) {
                         setSelectedRadio(val!);
+                        setState((){
+                          selectedOption = val!;
+                        });
                       },
                     ),
                     Container(
                       decoration: const BoxDecoration(
                           border: Border(
-                              top: BorderSide(color: Colors.grey, width: 0.4))),
+                        top: BorderSide(color: Colors.grey, width: 0.5),
+                      )),
                       child: RadioListTile(
                         activeColor: Colors.blue,
                         value: 2,
                         groupValue: selectedRadio,
-                        title: const Text('Netbanking'),
-                        onChanged: (val) {
-                          setSelectedRadio(val!);
-                        },
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                        top: BorderSide(color: Colors.grey, width: 0.5),
-                      )),
-                      child: RadioListTile(
-                        activeColor: Colors.blue,
-                        value: 3,
-                        groupValue: selectedRadio,
-                        title: const Text('Stripe'),
-                        onChanged: (val) {
-                          setSelectedRadio(val!);
-                        },
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                        top: BorderSide(color: Colors.grey, width: 0.5),
-                      )),
-                      child: RadioListTile(
-                        activeColor: Colors.blue,
-                        value: 4,
-                        groupValue: selectedRadio,
                         title: const Text('Wallet'),
                         onChanged: (val) {
                           setSelectedRadio(val!);
+                          setState(() {
+                            selectedOption = val!;
+                          });
                         },
                       ),
                     ),
+                    SizedBox(height: 10,),
+                    if(errorMessagePayment.isNotEmpty)
+                      Text(
+                        errorMessagePayment,
+                        style: TextStyle(color: Colors.red, fontSize: 15,),
+                      ),
                   ],
                 ),
               )
             ],
           ),
-          buildAddressContainer(context, 0),
           Container(
             margin: EdgeInsets.only(bottom: 10),
             child: Column(
               children: [
                 Container(
-                  color: Colors.white,
-                  width: maxWidth,
-                  padding: const EdgeInsets.all(14),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Price Details",
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.w500)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Price (1 item)",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          Text(
-                            "3000 MKD",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Delivery Fee",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          Text(
-                            "600 MKD",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
                   decoration: const BoxDecoration(
                       border: Border(
                           top: BorderSide(color: Colors.grey, width: 0.5))),
                   padding: const EdgeInsets.only(
-                      bottom: 14, left: 14, right: 14, top: 10),
+                      bottom: 14, left: 14, right: 14, top: 30),
                   child: const Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -268,7 +266,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                       ),
                       Text(
                         "3600MKD",
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -276,7 +274,65 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
               ],
             ),
           ),
-          shadowButton("Checkout", "/payment")
+          // shadowButton("Checkout", "/payment")
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Container( //SENKITE NA KOPCETO KUTI NA DR SCREEN
+              // width: MediaQuery.of(context).size.width * 0.8,
+              // decoration: BoxDecoration(
+              //   color: Colors.white,
+              //   boxShadow: [
+              //     BoxShadow(
+              //       color: Colors.grey.withOpacity(0.3),
+              //       blurRadius: 15,
+              //       spreadRadius: 15,
+              //       offset: const Offset(0, 3),
+              //     ),
+              //     const BoxShadow(
+              //       color: Colors.white,
+              //       blurRadius: 15,
+              //       spreadRadius: 4,
+              //       offset: Offset(0, 3),
+              //     ),
+              //     BoxShadow(
+              //       color: Colors.grey.withOpacity(0.3),
+              //       blurRadius: 15,
+              //       spreadRadius: 15,
+              //       offset: const Offset(0, 3),
+              //     ),
+              //   ],
+              // ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: ElevatedButton(
+                      onPressed: (){
+                        checkAgreement();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isAgreed ? Colors.blue : Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      child: Text(
+                        "Checkout",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                                  ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

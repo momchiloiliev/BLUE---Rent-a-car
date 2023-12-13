@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/appbar.dart';
 import 'package:flutter_app/ui/button.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import '../model/reservation.dart';
 import 'order_confirmed_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -12,6 +13,9 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  late Reservation reservation =
+      ModalRoute.of(context)!.settings.arguments as Reservation;
+
   bool isLightTheme = true;
   String cardNumber = '';
   String expiryDate = '';
@@ -52,7 +56,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
           enabledBorder: border,
         ),
       ),
-
       home: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -94,9 +97,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       obscureCardNumber: true,
                       obscureCardCvv: true,
                       isHolderNameVisible: true,
-                      cardBgColor: isLightTheme
-                          ? Colors.blue
-                          : Colors.blue,
+                      cardBgColor: isLightTheme ? Colors.blue : Colors.blue,
                       isSwipeGestureEnabled: true,
                       onCreditCardWidgetChange:
                           (CreditCardBrand creditCardBrand) {},
@@ -161,7 +162,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                                 padding:
-                                const EdgeInsets.symmetric(vertical: 15),
+                                    const EdgeInsets.symmetric(vertical: 15),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   'Pay 3600MKD',
@@ -191,10 +192,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void _onValidate() {
     if (formKey.currentState?.validate() ?? false) {
       print('valid!');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => OrderConfirmedScreen()),
-      );
+      Navigator.pushNamed(context, "/orderConfirmed", arguments: reservation);
     } else {
       print('invalid!');
     }

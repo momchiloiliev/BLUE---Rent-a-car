@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/deviceUtils.dart';
 import 'package:flutter_app/model/reservation.dart';
 import 'package:flutter_app/ui/your_selection_screen.dart';
 
@@ -25,6 +26,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   int driverIncludedPrice = 3000;
   int babySeatIncludedPrice = 1000;
   late int checkoutSum;
+  late String userId;
 
   bool isCarInitialized() {
     return car != null;
@@ -40,6 +42,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
         checkoutSum = car.price * 50;
       });
     });
+    _fetchUserId();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -111,8 +114,20 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
     });
   }
 
+  void _fetchUserId() {
+    DeviceUtils.getDeviceId(context).then((value) {
+      setState(() {
+        userId = value!;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    String? userId;
+    DeviceUtils.getDeviceId(context).then((value) {
+      userId = value;
+    });
     if (!isCarInitialized()) {
       return const Scaffold(
         body: Center(
@@ -500,7 +515,10 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                   height: 50,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      Reservation reservation = Reservation(
+                                      Reservation reservation;
+                                      if (userId != null) {
+                                        reservation = Reservation(
+                                          userId!,
                                           car.id,
                                           dayCount,
                                           isDriverSelected,
@@ -509,11 +527,31 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                           selectedDate ?? DateTime.now(),
                                           selectedDate!
                                               .add(Duration(days: dayCount)),
+                                          "", // Replace these empty strings with actual values
+                                          "", // Replace these empty strings with actual values
+                                          "", // Replace these empty strings with actual values
+                                          "", // Replace these empty strings with actual values
                                           "",
+                                        );
+                                        print(reservation);
+                                      } else {
+                                        reservation = Reservation(
                                           "",
+                                          car.id,
+                                          dayCount,
+                                          isDriverSelected,
+                                          isBabySeatSelected,
+                                          checkoutSum,
+                                          selectedDate ?? DateTime.now(),
+                                          selectedDate!
+                                              .add(Duration(days: dayCount)),
+                                          "", // Replace these empty strings with actual values
+                                          "", // Replace these empty strings with actual values
+                                          "", // Replace these empty strings with actual values
+                                          "", // Replace these empty strings with actual values
                                           "",
-                                          "",
-                                          "");
+                                        );
+                                      }
 
                                       Navigator.pushNamed(
                                           context, "/addPickUpAddress",

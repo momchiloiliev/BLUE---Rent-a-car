@@ -4,7 +4,7 @@ import 'location.dart';
 
 class Reservation {
   // int _id;
-  //int userId;
+  String _userId;
   String _carId;
   int _days;
   DateTime _reserveDate;
@@ -20,7 +20,7 @@ class Reservation {
   //Payment payment;
 
   Reservation(
-    // required this.userId,
+    this._userId,
     this._carId,
     this._days,
     this._driver,
@@ -35,6 +35,12 @@ class Reservation {
     this._returnLocation,
     // required this.payment
   );
+
+  String get userId => _userId;
+
+  set userId(String value) {
+    _userId = value;
+  }
 
   int get days => _days;
 
@@ -114,7 +120,7 @@ class Reservation {
 
   @override
   String toString() {
-    return 'Reservation{_carId: $_carId, _reserveDate: $_reserveDate, _driver: $_driver, _babySeat: $_babySeat, _totalPrice: $_totalPrice, _name: $_name, _email: $_email, _phone: $_phone, _pickupLocation: $_pickupLocation, _returnLocation: $_returnLocation}';
+    return 'Reservation{_userId: $_userId, _carId: $_carId, _days: $_days, _reserveDate: $_reserveDate, _returnDate: $_returnDate, _driver: $_driver, _babySeat: $_babySeat, _totalPrice: $_totalPrice, _name: $_name, _email: $_email, _phone: $_phone, _pickupLocation: $_pickupLocation, _returnLocation: $_returnLocation}';
   }
 
 // int get id => _id;

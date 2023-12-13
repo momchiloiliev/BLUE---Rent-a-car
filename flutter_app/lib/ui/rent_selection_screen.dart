@@ -554,7 +554,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                         padding:
                                             const EdgeInsets.only(top: 40.0),
                                         child: Container(
-                                          width: 200,
+                                          width: 250,
                                           height: 50,
                                           child: ElevatedButton(
                                             onPressed: () async {
@@ -631,7 +631,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  "Checkout - $checkoutSum",
+                                                  "Checkout - $checkoutSum MKD",
                                                   style: const TextStyle(
                                                     fontSize: 18.0,
                                                     fontWeight: FontWeight.w600,

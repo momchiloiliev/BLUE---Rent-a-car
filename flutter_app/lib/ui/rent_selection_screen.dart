@@ -354,7 +354,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                                   const Text(
                                                     " MKD/day",
                                                     style: TextStyle(
-                                                      fontSize: 20.0,
+                                                      fontSize: 18.0,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       color: Colors.black38,
@@ -367,9 +367,9 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 20.0, top: 20.0),
+                                              left: 12.0, top: 20.0),
                                           child: Container(
-                                            width: 132,
+                                            width: 155,
                                             height: 80,
                                             decoration: BoxDecoration(
                                               color: Colors.transparent,

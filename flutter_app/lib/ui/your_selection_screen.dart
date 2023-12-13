@@ -65,7 +65,7 @@ class _YourSelectionScreenState extends State<YourSelectionScreen> {
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            'City, Country', //todo: city,contry map from previous screen
+                            'City, Country', //todo: city,country map from previous screen
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
                         ],

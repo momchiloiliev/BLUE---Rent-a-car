@@ -121,14 +121,38 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            //todo: terms and conditions link, or screen, or popup with button OK
-                            // Navigator.push(
-                            //   context,
-                            //
-                            //   MaterialPageRoute(
-                            //     builder: (context) => TermsAndConditionsScreen(),
-                            //   ),
-                            // );
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Terms and Conditions'),
+                                  content: SingleChildScrollView(
+                                    child: ListBody(
+                                      children: <Widget>[
+                                        Text(
+                                          'Welcome to BLUE Rent-a-Car service!\n\n'
+                                              'By using our service, you agree to the following terms and conditions:\n\n'
+                                              '1. You must have a valid driver\'s license.\n\n'
+                                              '2. The car must be returned in the same condition it was rented.\n\n'
+                                              '3. Any damages caused during the rental period are the responsibility of the renter.\n\n'
+                                              '4. Rental fees must be paid in full upon return.\n\n'
+                                              '5. Any violation of traffic rules or laws is the responsibility of the renter.\n\n'
+                                              'Thank you for choosing our service!',
+                                        ),
+                                        SizedBox(height: 20),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                                          child: Text('OK', style: TextStyle(color: Colors.white),),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
                           },
                           child: const Text(
                             'Terms and conditions',
@@ -148,7 +172,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                         ),
                         onPressed: () {
                           changeButton();
-                        }, //todo: onclick change button text to -> agreed ->done
+                        },
 
                         child: Text(
                           buttonText,

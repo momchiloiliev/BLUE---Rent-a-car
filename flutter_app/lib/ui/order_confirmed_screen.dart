@@ -15,10 +15,11 @@ class OrderConfirmedScreen extends StatefulWidget {
 
 class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
   late Reservation reservation =
-      reservation = ModalRoute.of(context)!.settings.arguments as Reservation;
-
+      ModalRoute.of(context)!.settings.arguments as Reservation;
   @override
   Widget build(BuildContext context) {
+    reservation.addReservationToFirestore();
+
     return Scaffold(
         appBar: const CustomAppBar(
           title: "Payment",

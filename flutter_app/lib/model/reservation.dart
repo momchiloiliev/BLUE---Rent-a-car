@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app/model/payment.dart';
 import 'package:flutter_app/model/user.dart';
 
@@ -5,7 +6,7 @@ import 'location.dart';
 
 class Reservation {
   // int _id;
-  User _user;
+  String _user;
   String _carId;
   int _days;
   DateTime _reserveDate;
@@ -37,9 +38,9 @@ class Reservation {
     // required this.payment
   );
 
-  User get user => _user;
+  String get user => _user;
 
-  set user(User value) {
+  set user(String value) {
     _user = value;
   }
 
@@ -124,5 +125,67 @@ class Reservation {
     return 'Reservation{_userId: $_user, _carId: $_carId, _days: $_days, _reserveDate: $_reserveDate, _returnDate: $_returnDate, _driver: $_driver, _babySeat: $_babySeat, _totalPrice: $_totalPrice, _name: $_name, _email: $_email, _phone: $_phone, _pickupLocation: $_pickupLocation, _returnLocation: $_returnLocation}';
   }
 
-// int get id => _id;
+  Future<void> addReservationToFirestore() async {
+    try {
+      // Convert reservation details to a Map
+      Map<String, dynamic> reservationData = {
+        'userId': _user,
+        'carId': _carId,
+        'days': _days,
+        'reserveDate': _reserveDate,
+        'returnDate': _returnDate,
+        'driver': _driver,
+        'babySeat': _babySeat,
+        'totalPrice': _totalPrice,
+        'name': _name,
+        'email': _email,
+        'phone': _phone,
+        'pickupLocation': _pickupLocation,
+        'returnLocation': _returnLocation,
+      };
+
+      // Get references to Firestore collections
+      CollectionReference reservations =
+          FirebaseFirestore.instance.collection('reservations');
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+      CollectionReference cars = FirebaseFirestore.instance.collection('cars');
+
+      // Check if the reservation already exists in the 'reservations' collection
+      QuerySnapshot querySnapshot = await reservations
+          .where('userId', isEqualTo: _user)
+          .where('carId', isEqualTo: _carId)
+          .where('reserveDate', isEqualTo: _reserveDate)
+          .where('returnDate', isEqualTo: _returnDate)
+          .get();
+
+      // If the same reservation exists, don't add it again
+      if (querySnapshot.docs.isNotEmpty) {
+        print('Reservation already exists.');
+        return;
+      }
+
+      // Retrieve the car document reference using _carId
+      DocumentReference carDocRef = cars.doc(_carId);
+      DocumentReference userDocRef = users.doc(user);
+
+      // Add the reservation to the 'reservations' collection
+      DocumentReference reservationRef =
+          await reservations.add(reservationData);
+
+      // Add a reference to the reservation in the 'users' collection
+      await userDocRef.update({
+        'reservations': FieldValue.arrayUnion([reservationRef])
+      });
+
+      // Add a reference to the reservation in the 'cars' collection
+      await carDocRef.update({
+        'reservations': FieldValue.arrayUnion([reservationRef])
+      });
+    } catch (e) {
+      // Handle any errors that occur during the process
+      print('Error adding reservation: $e');
+      throw e;
+    }
+  }
 }

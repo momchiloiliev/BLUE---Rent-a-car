@@ -557,10 +557,41 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                           width: 200,
                                           height: 50,
                                           child: ElevatedButton(
-                                            onPressed: () {
+                                            onPressed: () async {
+                                              // Check if the user already exists in the 'users' collection
+                                              QuerySnapshot<
+                                                      Map<String, dynamic>>
+                                                  userSnapshot =
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('users')
+                                                      .where('userId',
+                                                          isEqualTo:
+                                                              userId!) // Replace 'userId' with your actual field name
+                                                      .get();
+
+                                              DocumentReference? userRef;
+                                              if (userSnapshot
+                                                  .docs.isNotEmpty) {
+                                                userRef = userSnapshot
+                                                    .docs[0].reference;
+                                              } else {
+                                                // If the user doesn't exist, add the user to the 'users' collection
+                                                DocumentReference newUserRef =
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('users')
+                                                        .add({
+                                                  'userId':
+                                                      userId, // Include userId in the user document
+                                                  // Include other user details here
+                                                });
+                                                userRef = newUserRef;
+                                              }
+
                                               Reservation reservation =
                                                   Reservation(
-                                                User(userId!),
+                                                userRef.id,
                                                 car.id,
                                                 dayCount,
                                                 isDriverSelected,
@@ -575,7 +606,6 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                                 "", // Replace these empty strings with actual values
                                                 "",
                                               );
-                                              print(reservation);
 
                                               Navigator.pushNamed(
                                                   context, "/addPickUpAddress",

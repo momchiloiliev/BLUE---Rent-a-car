@@ -189,3 +189,26 @@ class Reservation {
     }
   }
 }
+
+Future<List<DateTime>> fetchReservedDates(String carId) async {
+  List<DateTime> reservedDates = [];
+
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      .collection('reservations')
+      .where('carId',
+          isEqualTo: carId) // Assuming 'car.id' represents the specific car
+      .get();
+
+  querySnapshot.docs.forEach((doc) {
+    DateTime reserveDate = (doc['reserveDate'] as Timestamp).toDate();
+    DateTime returnDate = (doc['returnDate'] as Timestamp).toDate();
+
+    for (DateTime date = reserveDate;
+        date.isBefore(returnDate) || date.isAtSameMomentAs(returnDate);
+        date = date.add(Duration(days: 1))) {
+      reservedDates.add(date);
+    }
+  });
+
+  return reservedDates;
+}

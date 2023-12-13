@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/deviceUtils.dart';
 import 'package:flutter_app/model/reservation.dart';
-import 'package:flutter_app/model/user.dart';
-import 'package:flutter_app/ui/your_selection_screen.dart';
 
 import '../model/car.dart';
 
@@ -28,6 +26,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   int babySeatIncludedPrice = 1000;
   late int checkoutSum;
   Future<String?>? userIdFuture;
+  List<DateTime> reservedDates = [];
 
   bool isCarInitialized() {
     return car != null;
@@ -56,20 +55,49 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
     });
   }
 
+  bool isDateSelectable(DateTime date) {
+    // Check if the date is not contained in reservedDates or is today
+    return !reservedDates.contains(date) || isToday(date);
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime now = DateTime.now();
+    final List<DateTime> fetchedReservedDates =
+        await fetchReservedDates(car.id);
+
+    print(fetchedReservedDates);
+
+    // Logic to find the first available date after today
+    DateTime? firstAvailableDate;
+    for (DateTime date = now;
+        date.isBefore(DateTime(2101));
+        date = date.add(Duration(days: 1))) {
+      if (!fetchedReservedDates.contains(date)) {
+        firstAvailableDate = date;
+        break;
+      }
+    }
+
+    setState(() {
+      reservedDates = fetchedReservedDates;
+    });
+
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? now,
-      firstDate: now, // Set the first date to be the current date
+      firstDate: now,
       lastDate: DateTime(2101),
+      selectableDayPredicate: (DateTime date) {
+        // Check if the date is selectable based on your criteria
+        return isDateSelectable(date);
+      },
     );
 
-    if (picked != null) {
+    if (picked != null && isDateSelectable(picked)) {
       setState(() {
         selectedDate = picked;
 
-// Update the text based on the selected date
+        // Update the text based on the selected date
         if (isToday(picked)) {
           startingFromDateInfo = "Today";
         } else if (isTomorrow(picked)) {
@@ -79,7 +107,6 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
         }
       });
     } else {
-// No date chosen
       setState(() {
         startingFromDateInfo = " ";
       });

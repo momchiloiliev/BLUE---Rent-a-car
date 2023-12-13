@@ -1,10 +1,11 @@
 import 'package:flutter_app/model/payment.dart';
+import 'package:flutter_app/model/user.dart';
 
 import 'location.dart';
 
 class Reservation {
   // int _id;
-  String _userId;
+  User _user;
   String _carId;
   int _days;
   DateTime _reserveDate;
@@ -20,7 +21,7 @@ class Reservation {
   //Payment payment;
 
   Reservation(
-    this._userId,
+    this._user,
     this._carId,
     this._days,
     this._driver,
@@ -36,10 +37,10 @@ class Reservation {
     // required this.payment
   );
 
-  String get userId => _userId;
+  User get user => _user;
 
-  set userId(String value) {
-    _userId = value;
+  set user(User value) {
+    _user = value;
   }
 
   int get days => _days;
@@ -120,7 +121,7 @@ class Reservation {
 
   @override
   String toString() {
-    return 'Reservation{_userId: $_userId, _carId: $_carId, _days: $_days, _reserveDate: $_reserveDate, _returnDate: $_returnDate, _driver: $_driver, _babySeat: $_babySeat, _totalPrice: $_totalPrice, _name: $_name, _email: $_email, _phone: $_phone, _pickupLocation: $_pickupLocation, _returnLocation: $_returnLocation}';
+    return 'Reservation{_userId: $_user, _carId: $_carId, _days: $_days, _reserveDate: $_reserveDate, _returnDate: $_returnDate, _driver: $_driver, _babySeat: $_babySeat, _totalPrice: $_totalPrice, _name: $_name, _email: $_email, _phone: $_phone, _pickupLocation: $_pickupLocation, _returnLocation: $_returnLocation}';
   }
 
 // int get id => _id;

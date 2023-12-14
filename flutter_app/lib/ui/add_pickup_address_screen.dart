@@ -51,13 +51,22 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _imageFile != null
-                    ? CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  radius: 70,
-                  backgroundImage: FileImage(
-                    File(_imageFile!.path),
+                    ? Container(
+                    decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.blue,
+                      width: 5.0, // Adjust the width as needed
+                    ),
                   ),
-                )
+                      child: CircleAvatar(
+                                        backgroundColor: Colors.blue,
+                                        radius: 70,
+                                        backgroundImage: FileImage(
+                      File(_imageFile!.path),
+                                        ),
+                                      ),
+                    )
                     : InkWell(
                   onTap: () async {
                     final ImagePicker _picker = ImagePicker();
@@ -70,12 +79,21 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                       });
                     }
                   },
-                  child: const CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    radius: 30,
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.blue,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: const CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 30,
+                      child: Icon(
+                        Icons.photo_camera,
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
                 ),

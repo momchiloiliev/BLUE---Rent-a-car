@@ -38,6 +38,24 @@ class Reservation {
     // required this.payment
   );
 
+  factory Reservation.fromSnapshot(Map<String, dynamic> data) {
+    return Reservation(
+      data['userId'],
+      data['carId'],
+      data['days'],
+      data['driver'],
+      data['babySeat'],
+      data['totalPrice'],
+      data['reserveDate'].toDate(),
+      data['returnDate'].toDate(),
+      data['name'],
+      data['email'],
+      data['phone'],
+      data['pickupLocation'],
+      data['returnLocation'],
+    );
+  }
+
   String get user => _user;
 
   set user(String value) {

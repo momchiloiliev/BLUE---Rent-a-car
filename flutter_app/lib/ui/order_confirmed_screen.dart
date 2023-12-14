@@ -281,7 +281,63 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                       ],
                     ),
                   ),
-                  shadowButton("Your Reservations", "/yourReservations")
+                  Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 15,
+                          spreadRadius: 15,
+                          offset: const Offset(0, 3),
+                        ),
+                        const BoxShadow(
+                          color: Colors.white,
+                          blurRadius: 15,
+                          spreadRadius: 4,
+                          offset: Offset(0, 3),
+                        ),
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 15,
+                          spreadRadius: 15,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, "/yourReservations",
+                                    arguments: reservation.user);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                              ),
+                              child: Text(
+                                "Your Reservations",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               );
             }

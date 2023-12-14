@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/car.dart';
-import 'package:flutter_app/ui/appbar.dart';
-import 'package:flutter_app/ui/shadow_button.dart';
-
+import 'package:image_picker/image_picker.dart';
+import '../model/car.dart';
 import '../model/reservation.dart';
+import '../ui/appbar.dart';
+import '../ui/shadow_button.dart';
+import 'dart:io';
 
 class AddPickUpAddressScreen extends StatefulWidget {
-  const AddPickUpAddressScreen({super.key});
+  const AddPickUpAddressScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddPickUpAddressScreen> createState() => _AddPickUpAddressScreenState();
+  State<AddPickUpAddressScreen> createState() =>
+      _AddPickUpAddressScreenState();
 }
 
 class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
@@ -22,18 +24,20 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _pickUpAddressController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _returnAddressController =
-      TextEditingController();
+  TextEditingController();
+
+  late File? _imageFile = null;
 
   @override
   Widget build(BuildContext context) {
-    // Set initial text values if available
     _nameController.text = reservation.name;
     _emailController.text = reservation.email;
     _phoneController.text = reservation.phone;
     _pickUpAddressController.text = reservation.pickupLocation;
     _returnAddressController.text = reservation.returnLocation;
+
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Add Pick Up Address",
@@ -42,25 +46,69 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 100, bottom: 20),
+            padding: const EdgeInsets.only(top: 50, bottom: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _imageFile != null
+                    ? CircleAvatar(
+                  backgroundColor: Colors.blue,
+                  radius: 70,
+                  backgroundImage: FileImage(
+                    File(_imageFile!.path),
+                  ),
+                )
+                    : InkWell(
+                  onTap: () async {
+                    final ImagePicker _picker = ImagePicker();
+                    final XFile? image =
+                    await _picker.pickImage(source: ImageSource.camera);
+
+                    if (image != null) {
+                      setState(() {
+                        _imageFile = File(image.path);
+                      });
+                    }
+                  },
+                  child: const CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    radius: 30,
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: _imageFile != null,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Icon(
-                    Icons.gps_fixed,
-                    color: Colors.blue,
-                    size: 25,
+                ElevatedButton(
+                  onPressed: () async {
+                    final ImagePicker _picker = ImagePicker();
+                    final XFile? image =
+                    await _picker.pickImage(source: ImageSource.camera);
+
+                    if (image != null) {
+                      setState(() {
+                        _imageFile = File(image.path);
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
+                  ),
+                  child: Text(
+                    "Edit photo",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-                InkWell(
-                  onTap: () {},
-                  child: const Text(
-                    "Use current location",
-                    style: TextStyle(color: Colors.blue, fontSize: 18),
-                  ),
-                )
               ],
             ),
           ),
@@ -149,15 +197,15 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
       ),
     );
   }
-}
 
-Widget textField(String label, TextEditingController controller) {
-  return TextField(
-    controller: controller,
-    decoration: InputDecoration(
-        labelText: label, labelStyle: const TextStyle(color: Colors.grey)),
-    onChanged: (value) {
-      controller.text = value;
-    },
-  );
+  Widget textField(String label, TextEditingController controller) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+          labelText: label, labelStyle: const TextStyle(color: Colors.grey)),
+      onChanged: (value) {
+        controller.text = value;
+      },
+    );
+  }
 }

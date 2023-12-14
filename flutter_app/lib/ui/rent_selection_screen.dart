@@ -65,11 +65,9 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
     final List<DateTime> fetchedReservedDates =
         await fetchReservedDates(car.id);
 
-    print(fetchedReservedDates);
-
     // Logic to find the first available date after today
     DateTime? firstAvailableDate;
-    for (DateTime date = now;
+    for (DateTime date = now.add(Duration(days: 1));
         date.isBefore(DateTime(2101));
         date = date.add(Duration(days: 1))) {
       if (!fetchedReservedDates.contains(date)) {
@@ -77,20 +75,25 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
         break;
       }
     }
-
     setState(() {
       reservedDates = fetchedReservedDates;
     });
 
+    print(reservedDates);
+
+    // DateTime selectedDate =
+    //     firstAvailableDate ?? now; // Select first available or current date
+
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? now,
-      firstDate: now,
+      firstDate: selectedDate ?? now,
+      // currentDate: firstAvailableDate,
       lastDate: DateTime(2101),
-      selectableDayPredicate: (DateTime date) {
-        // Check if the date is selectable based on your criteria
-        return isDateSelectable(date);
-      },
+      // selectableDayPredicate: (DateTime date) {
+      //   // Check if the date is selectable based on your criteria
+      //   return isDateSelectable(date);
+      // },
     );
 
     if (picked != null && isDateSelectable(picked)) {

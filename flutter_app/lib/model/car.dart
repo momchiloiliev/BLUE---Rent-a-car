@@ -27,15 +27,16 @@ class Car {
 
   factory Car.fromMap(String carId, Map<String, dynamic> carData) {
     return Car(
-        id: carId,
-        model: carData['model'],
-        price: carData['price'],
-        horsePower: carData['horsePower'],
-        launchControlKm: carData['launchControlKm'],
-        fullTankKm: carData['fullTankKm'],
-        typeFuel: carData['typeFuel'],
-        reserved: carData['reserved'],
-        imageLink: carData['imageLink']);
+      id: carId,
+      model: carData['model'],
+      price: carData['price'],
+      horsePower: carData['horsePower'],
+      launchControlKm: carData['launchControlKm'],
+      fullTankKm: carData['fullTankKm'],
+      typeFuel: carData['typeFuel'],
+      reserved: carData['reserved'],
+      imageLink: carData['imageLink'],
+    );
   }
 }
 
@@ -51,8 +52,8 @@ Future<Car?> getCarData(String carId) async {
       print('Car with ID $carId does not exist.');
       return null;
     }
-  } catch (e) {
-    print('Error fetching car data: $e');
+  } catch (e, stackTrace) {
+    print('Error fetching car data for ID $carId: $e\n$stackTrace');
     return null;
   }
 }

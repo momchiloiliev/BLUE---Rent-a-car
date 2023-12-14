@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/address_container.dart';
 import 'package:flutter_app/ui/appbar.dart';
@@ -21,9 +22,9 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
         appBar: AppBar(
           title: const Text('Your Reservations',
             style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           backgroundColor: Colors.blue,
           leading: IconButton(
@@ -36,9 +37,12 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
             },
           ),
           bottom: TabBar(
+
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white60,
             tabs: [
-              Tab(text: 'Active'),
-              Tab(text: 'Past'),
+              Tab(child: Text('Active', style: TextStyle(fontSize: 17,),),),
+              Tab(child: Text('Past', style: TextStyle(fontSize: 17,),),),
             ],
           ),
         ),
@@ -47,23 +51,24 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
             Expanded(
               child: TabBarView(
                 children: [
+                  ListView.builder( //todo: da gi dele od baza, sprema data dali e active ili past
+                    itemCount: 2,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildCarDetailsContainer(
+                        context,
+                        "Cancel Reservation",
+                      ); //todo: if status=incoming->cancel reservation=red and clickable, else(ongoing) not clickable grey
+                    },
+                  ),
+
                   ListView.builder(
-                                itemCount: 2,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return buildCarDetailsContainer(
-                                    context,
-                                    "Cancel Reservation",
-                                  ); //todo: if status=incoming->cancel reservation=red and clickable, else(ongoing) not clickable grey
-                                },
-                              ),
-                ListView.builder(
-                              itemCount: 4,
-                              itemBuilder: (BuildContext context, int index) {
-                                return buildCarDetailsContainerPast(
-                                  context,
-                                );
-                              },
-                            ),
+                    itemCount: 4,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildCarDetailsContainerPast(
+                        context,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

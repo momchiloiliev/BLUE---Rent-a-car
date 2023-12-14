@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
+Widget buildCarDetailsContainerPast(BuildContext context) {
   return Container(
     margin: const EdgeInsets.only(top: 20),
     decoration: BoxDecoration(
@@ -26,7 +26,7 @@ Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
         ),
       ],
     ),
-    height: MediaQuery.of(context).size.height * 0.28,
+    // height: MediaQuery.of(context).size.height,
     child: Column(
       children: [
         Row(
@@ -34,7 +34,7 @@ Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                  right: 8.0, left: 8.0, bottom: 8.0, top: 50.0),
+                  right: 8.0, left: 8.0, bottom: 8.0, top: 8.0),
               child: Row(
                 children: [
                   const Column(
@@ -50,10 +50,9 @@ Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("status: incoming", style: TextStyle(color: Colors.green, fontSize: 18),),
                       const Text("BMW AMG",
                           style:
-                              TextStyle(fontSize: 16, color: Colors.black54)),
+                          TextStyle(fontSize: 16, color: Colors.black54)),
                       Text(
                         "3000/per day",
                         style: TextStyle(
@@ -67,49 +66,22 @@ Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
                               style: TextStyle(
                                 fontSize: 16,
                               )),
-                          Column(
-                            children: [
-                              InkWell(
-                                onTap: () {},
-                                child: const Icon(
-                                  Icons.arrow_drop_up,
-                                  size: 15,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: const Icon(
-                                  Icons.arrow_drop_down,
-                                  size: 15,
-                                ),
-                              )
-                            ],
-                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text("Date: 12.12.2023",
+                              style: TextStyle(
+                                fontSize: 16,
+                              )),
                         ],
                       ),
                     ],
                   ),
-
                 ],
               ),
-
             ),
           ],
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 20),
-          decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: Colors.grey, width: 0.2))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: Text(buttonText,
-                    style: TextStyle(color: Colors.grey, fontSize: 16)),
-              ),
-            ],
-          ),
         ),
       ],
     ),

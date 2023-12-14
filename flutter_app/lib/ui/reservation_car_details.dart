@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/car.dart';
+import '../model/reservation.dart';
+import 'package:flutter_app/model/reservation.dart';
+import 'package:flutter_app/deviceUtils.dart';
+late Stream<QuerySnapshot<Map<String, dynamic>>> firestoreDb;
 
 Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
   return Container(
@@ -27,6 +33,7 @@ Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
       ],
     ),
     height: MediaQuery.of(context).size.height * 0.28,
+    // print(reservation);
     child: Column(
       children: [
         Row(
@@ -40,7 +47,7 @@ Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
                   const Column(
                     children: [
                       Image(
-                        image: AssetImage('images/bmw_amg.png'),
+                        image: AssetImage('images/bmw_amg.png'),//tuka od baza
                         width: 150,
                         height: 80,
                       ),
@@ -51,7 +58,7 @@ Widget buildCarDetailsContainer(BuildContext context, String buttonText) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("status: incoming", style: TextStyle(color: Colors.green, fontSize: 18),),
-                      const Text("BMW AMG",
+                      const Text("BMW AMG", //tuka od baza
                           style:
                               TextStyle(fontSize: 16, color: Colors.black54)),
                       Text(

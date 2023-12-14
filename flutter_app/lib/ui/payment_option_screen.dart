@@ -297,7 +297,6 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
           ),
           // shadowButton("Checkout", "/payment")
           Container(
-            //SENKITE NA KOPCETO KUTI NA DR SCREEN
             // width: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(
               color: Colors.white,

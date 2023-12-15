@@ -70,7 +70,7 @@ Widget buildCarDetailsContainerPast(
                             children: [
                               Text(car.model,
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.black54)),
+                                      fontSize: 18, color: Colors.black54)),
                               Text(
                                 "${car.price * 50}/per day",
                                 style: TextStyle(
@@ -89,7 +89,25 @@ Widget buildCarDetailsContainerPast(
                               Row(
                                 children: [
                                   Text(
-                                      "Date: ${reservation.reserveDate.toString().substring(0, 10)}",
+                                      "Picked Up: ${reservation.reserveDate.toString().substring(0, 10)}",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                      "Returned: ${reservation.returnDate.toString().substring(0, 10)}",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                      "Total Price: ${reservation.totalPrice}",
                                       style: TextStyle(
                                         fontSize: 16,
                                       )),

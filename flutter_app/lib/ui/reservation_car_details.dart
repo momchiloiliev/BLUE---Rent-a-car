@@ -27,9 +27,7 @@ Widget buildCarDetailsContainer(
     Timestamp reservationTimestamp = reservation['reserveDate'];
     bool isBeforeToday = isReservationBeforeToday(reservationTimestamp);
     bool isAfterToday = !isReservationBeforeToday(reservationTimestamp);
-
-
-  return FutureBuilder(
+    return FutureBuilder(
       future: getCarData(reservation['carId']),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -91,7 +89,7 @@ Widget buildCarDetailsContainer(
                             children: [
                               Text(car.model, //tuka od baza
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.black54)),
+                                      fontSize: 18, color: Colors.black54)),
                               Text(
                                 "${car.price * 50}/per day",
                                 style: TextStyle(
@@ -131,7 +129,7 @@ Widget buildCarDetailsContainer(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: (){},
                             // Cancel reservation logic
                           // Add your code to cancel the reservation here
                           child: Text('Cancel Reservation', style: TextStyle(color: Colors.red, fontSize: 16),),
@@ -145,4 +143,5 @@ Widget buildCarDetailsContainer(
           );
         }
       });
+
 }

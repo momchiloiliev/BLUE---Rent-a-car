@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/past_reservations_details.dart';
 import 'package:flutter_app/ui/reservation_car_details.dart';
+import 'package:flutter_app/ui/shadow_button.dart';
 
 class YourReservationsScreen extends StatefulWidget {
   const YourReservationsScreen({Key? key});
@@ -119,6 +120,8 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                               child: Text('No reservation data found.'),
                             );
                           } else {
+
+
                             final List<DocumentSnapshot<Map<String, dynamic>>>
                                 reservationDocs = snapshot.data!;
                             final List<Map<String, dynamic>> reservationsData =
@@ -134,6 +137,19 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                             final List<Map<String, dynamic>> pastReservations =
                                 getPastReservations(reservationsData);
 
+                            activeReservations.sort((a, b) {
+                              bool isAfterTodayA = !isReservationBeforeToday(a['reserveDate']);
+                              bool isAfterTodayB = !isReservationBeforeToday(b['reserveDate']);
+
+                              if (isAfterTodayA && !isAfterTodayB) {
+                                return -1; // Show reservations with date after today first
+                              } else if (!isAfterTodayA && isAfterTodayB) {
+                                return 1; // Show reservations with cancel button first
+                              } else {
+                                return 0;
+                              }
+                            });
+
                             return TabBarView(
                               children: [
                                 // Active Reservations Tab
@@ -144,7 +160,6 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                                     return buildCarDetailsContainer(
                                       context,
                                       activeReservations[index],
-                                      "Cancel Reservation",
                                     );
                                   },
                                 ),
@@ -165,11 +180,14 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                       );
                     }
                   },
+
                 )
               : const Center(
                   child: Text('User ID not found.'),
                 ),
-        ));
+
+        )
+    );
   }
 
   List<Map<String, dynamic>> getActiveReservations(
@@ -178,7 +196,7 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
     return reservations.where((reservation) {
       final DateTime reserveDate = reservation['reserveDate'].toDate();
       final DateTime returnDate = reservation['returnDate'].toDate();
-      return reserveDate.isBefore(now) && returnDate.isAfter(now);
+      return returnDate.isAfter(now);
     }).toList();
   }
 
@@ -192,3 +210,4 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
     }).toList();
   }
 }
+//todo: kopce go to home

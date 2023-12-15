@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   flutter_credit_card: 4.0.1
   device_info: ^2.0.2
+  intl: 0.18.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

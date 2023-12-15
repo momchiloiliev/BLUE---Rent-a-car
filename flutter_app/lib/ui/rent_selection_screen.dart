@@ -84,75 +84,92 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
 
     print(reservedDates);
 
-    // Show SfDateRangePicker to select reserve and return dates
+    bool isReturnDateValid() {
+      // Check if the selected return date is within the reserved dates
+      if (endDate != null) {
+        return !reservedDates.any((reservedDate) =>
+            reservedDate.isAfter(startDate!) &&
+            reservedDate.isBefore(endDate!));
+      }
+      return true;
+    }
+
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: SfDateRangePicker(
-                  view: DateRangePickerView.month,
-                  selectionMode: DateRangePickerSelectionMode.range,
-                  minDate: now,
-                  maxDate: DateTime(2101),
-                  selectableDayPredicate: (DateTime date) {
-                    // Convert the date to a date format without the time
-                    DateTime currentDate =
-                        DateTime(date.year, date.month, date.day);
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: SfDateRangePicker(
+                      view: DateRangePickerView.month,
+                      selectionMode: DateRangePickerSelectionMode.range,
+                      minDate: now,
+                      maxDate: DateTime(2101),
+                      selectableDayPredicate: (DateTime date) {
+                        DateTime currentDate =
+                            DateTime(date.year, date.month, date.day);
 
-                    // Check if the date is selectable based on reserved dates
-                    return !fetchedReservedDates.any((reservedDate) => DateTime(
-                                reservedDate.year,
-                                reservedDate.month,
-                                reservedDate.day)
-                            .isAtSameMomentAs(currentDate)) &&
-                        !reservedDates.any((reservedDate) => DateTime(
-                                reservedDate.year,
-                                reservedDate.month,
-                                reservedDate.day)
-                            .isAtSameMomentAs(currentDate));
-                  },
-                  onSelectionChanged:
-                      (DateRangePickerSelectionChangedArgs args) {
-                    if (args.value is PickerDateRange) {
-                      // Capture selected reserve and return dates
-                      startDate = args.value.startDate!;
-                      endDate = args.value.endDate!;
-
-                      // Perform necessary actions with the selected dates
-                      // For example:
-                      print('Selected reserve date: $startDate');
-                      print('Selected return date: $endDate');
-                      print(
-                          'Days: ${endDate.day.toInt() - startDate.day.toInt()}');
-                    }
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  'Note: The dates that are not clickable are reserved for this car.',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontStyle: FontStyle.italic,
+                        return !fetchedReservedDates.any((reservedDate) =>
+                                DateTime(reservedDate.year, reservedDate.month,
+                                        reservedDate.day)
+                                    .isAtSameMomentAs(currentDate)) &&
+                            !reservedDates.any((reservedDate) => DateTime(
+                                    reservedDate.year,
+                                    reservedDate.month,
+                                    reservedDate.day)
+                                .isAtSameMomentAs(currentDate));
+                      },
+                      onSelectionChanged:
+                          (DateRangePickerSelectionChangedArgs args) {
+                        setState(() {
+                          if (args.value is PickerDateRange) {
+                            startDate = args.value.startDate;
+                            endDate = args.value.endDate;
+                          }
+                        });
+                      },
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      'Note: The dates that are not clickable are reserved for this car.',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                  if (!isReturnDateValid())
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'The return date cannot be within the reserved dates.',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (isReturnDateValid()) {
+                        Navigator.of(context)
+                            .pop(); // Close the dialog only if the return date is valid
+                      }
+                    },
+                    child: Text('Submit'),
+                  ),
+                ],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .pop(); // Close the dialog on button press
-                },
-                child: Text('Close'),
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

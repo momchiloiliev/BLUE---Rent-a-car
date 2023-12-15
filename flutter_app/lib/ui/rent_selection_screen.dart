@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/deviceUtils.dart';
 import 'package:flutter_app/model/reservation.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../model/car.dart';
 
@@ -27,6 +28,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
   late int checkoutSum;
   Future<String?>? userIdFuture;
   List<DateTime> reservedDates = [];
+  late DateTime startDate = DateTime.now();
+  late DateTime endDate = DateTime.now();
 
   bool isCarInitialized() {
     return car != null;
@@ -81,39 +84,112 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
 
     print(reservedDates);
 
+    // Show SfDateRangePicker to select reserve and return dates
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: SfDateRangePicker(
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.range,
+                  minDate: now,
+                  maxDate: DateTime(2101),
+                  selectableDayPredicate: (DateTime date) {
+                    // Convert the date to a date format without the time
+                    DateTime currentDate =
+                        DateTime(date.year, date.month, date.day);
+
+                    // Check if the date is selectable based on reserved dates
+                    return !fetchedReservedDates.any((reservedDate) => DateTime(
+                                reservedDate.year,
+                                reservedDate.month,
+                                reservedDate.day)
+                            .isAtSameMomentAs(currentDate)) &&
+                        !reservedDates.any((reservedDate) => DateTime(
+                                reservedDate.year,
+                                reservedDate.month,
+                                reservedDate.day)
+                            .isAtSameMomentAs(currentDate));
+                  },
+                  onSelectionChanged:
+                      (DateRangePickerSelectionChangedArgs args) {
+                    if (args.value is PickerDateRange) {
+                      // Capture selected reserve and return dates
+                      startDate = args.value.startDate!;
+                      endDate = args.value.endDate!;
+
+                      // Perform necessary actions with the selected dates
+                      // For example:
+                      print('Selected reserve date: $startDate');
+                      print('Selected return date: $endDate');
+                      print(
+                          'Days: ${endDate.day.toInt() - startDate.day.toInt()}');
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  'Note: The dates that are not clickable are reserved for this car.',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pop(); // Close the dialog on button press
+                },
+                child: Text('Close'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
     // DateTime selectedDate =
     //     firstAvailableDate ?? now; // Select first available or current date
 
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? now,
-      firstDate: selectedDate ?? now,
-      // currentDate: firstAvailableDate,
-      lastDate: DateTime(2101),
-      // selectableDayPredicate: (DateTime date) {
-      //   // Check if the date is selectable based on your criteria
-      //   return isDateSelectable(date);
-      // },
-    );
-
-    if (picked != null && isDateSelectable(picked)) {
-      setState(() {
-        selectedDate = picked;
-
-        // Update the text based on the selected date
-        if (isToday(picked)) {
-          startingFromDateInfo = "Today";
-        } else if (isTomorrow(picked)) {
-          startingFromDateInfo = "Tomorrow";
-        } else {
-          startingFromDateInfo = " ";
-        }
-      });
-    } else {
-      setState(() {
-        startingFromDateInfo = " ";
-      });
-    }
+    // final DateTime? picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: selectedDate ?? now,
+    //   firstDate: selectedDate ?? now,
+    //   // currentDate: firstAvailableDate,
+    //   lastDate: DateTime(2101),
+    //   // selectableDayPredicate: (DateTime date) {
+    //   //   // Check if the date is selectable based on your criteria
+    //   //   return isDateSelectable(date);
+    //   // },
+    // );
+    //
+    // if (picked != null && isDateSelectable(picked)) {
+    //   setState(() {
+    //     selectedDate = picked;
+    //
+    //     // Update the text based on the selected date
+    //     if (isToday(picked)) {
+    //       startingFromDateInfo = "Today";
+    //     } else if (isTomorrow(picked)) {
+    //       startingFromDateInfo = "Tomorrow";
+    //     } else {
+    //       startingFromDateInfo = " ";
+    //     }
+    //   });
+    // } else {
+    //   setState(() {
+    //     startingFromDateInfo = " ";
+    //   });
+    // }
   }
 
   bool isToday(DateTime date) {
@@ -310,9 +386,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  selectedDate != null
-                                                      ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                                                      : "Starting from",
+                                                  "${startDate.day}/${startDate.month}/${startDate.year}",
                                                   style: const TextStyle(
                                                     fontSize: 18.0,
                                                     fontWeight: FontWeight.w600,
@@ -325,12 +399,12 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                                       const EdgeInsets.only(
                                                           left: 8.0),
                                                   child: Text(
-                                                    startingFromDateInfo,
+                                                    "${endDate.day}/${endDate.month}/${endDate.year}",
                                                     style: const TextStyle(
-                                                      fontSize: 16.0,
+                                                      fontSize: 18.0,
                                                       fontWeight:
-                                                          FontWeight.w400,
-                                                      color: Colors.black,
+                                                          FontWeight.w600,
+                                                      color: Colors.black38,
                                                     ),
                                                   ),
                                                 ),
@@ -351,99 +425,94 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 30.0, top: 20.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                  Row(children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 30.0, top: 20.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Days${endDate.day.toInt() + 1 - startDate.day.toInt()}",
+                                            style: TextStyle(
+                                              fontSize: 28.0,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Row(
                                             children: [
-                                              const Text(
-                                                "Days",
-                                                style: TextStyle(
-                                                  fontSize: 28.0,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black,
+                                              Text(
+                                                "${car.price * 50}",
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black38,
                                                 ),
                                               ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "${car.price * 50}",
-                                                    style: const TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.black38,
-                                                    ),
-                                                  ),
-                                                  const Text(
-                                                    " MKD/day",
-                                                    style: TextStyle(
-                                                      fontSize: 18.0,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.black38,
-                                                    ),
-                                                  ),
-                                                ],
+                                              const Text(
+                                                " MKD/day",
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black38,
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 12.0, top: 20.0),
-                                          child: Container(
-                                            width: 155,
-                                            height: 80,
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 2.0,
-                                              ),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(10.0)),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                IconButton(
-                                                  onPressed: _removeDay,
-                                                  icon: const Icon(
-                                                    Icons.remove,
-                                                    color: Colors.black38,
-                                                    size: 30.0,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  dayCount.toString(),
-                                                  style: const TextStyle(
-                                                    fontSize: 30.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  onPressed: _addDay,
-                                                  icon: const Icon(
-                                                    Icons.add,
-                                                    color: Colors.black38,
-                                                    size: 30.0,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ]),
+                                        ],
+                                      ),
+                                    ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(
+                                    //       left: 12.0, top: 20.0),
+                                    //   child: Container(
+                                    //     width: 155,
+                                    //     height: 80,
+                                    //     decoration: BoxDecoration(
+                                    //       color: Colors.transparent,
+                                    //       border: Border.all(
+                                    //         color: Colors.grey,
+                                    //         width: 2.0,
+                                    //       ),
+                                    //       borderRadius:
+                                    //           const BorderRadius.all(
+                                    //               Radius.circular(10.0)),
+                                    //     ),
+                                    //     child: Row(
+                                    //       mainAxisAlignment:
+                                    //           MainAxisAlignment.spaceAround,
+                                    //       children: [
+                                    //         IconButton(
+                                    //           onPressed: _removeDay,
+                                    //           icon: const Icon(
+                                    //             Icons.remove,
+                                    //             color: Colors.black38,
+                                    //             size: 30.0,
+                                    //           ),
+                                    //         ),
+                                    //         Text(
+                                    //           dayCount.toString(),
+                                    //           style: const TextStyle(
+                                    //             fontSize: 30.0,
+                                    //             fontWeight: FontWeight.bold,
+                                    //             color: Colors.black,
+                                    //           ),
+                                    //         ),
+                                    //         IconButton(
+                                    //           onPressed: _addDay,
+                                    //           icon: const Icon(
+                                    //             Icons.add,
+                                    //             color: Colors.black38,
+                                    //             size: 30.0,
+                                    //           ),
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ]),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -623,13 +692,14 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                                   Reservation(
                                                 userRef.id,
                                                 car.id,
-                                                dayCount,
+                                                endDate.day.toInt() +
+                                                    1 -
+                                                    startDate.day.toInt(),
                                                 isDriverSelected,
                                                 isBabySeatSelected,
                                                 checkoutSum,
-                                                selectedDate ?? DateTime.now(),
-                                                selectedDate!.add(
-                                                    Duration(days: dayCount)),
+                                                startDate,
+                                                endDate,
                                                 "", // Replace these empty strings with actual values
                                                 "", // Replace these empty strings with actual values
                                                 "", // Replace these empty strings with actual values

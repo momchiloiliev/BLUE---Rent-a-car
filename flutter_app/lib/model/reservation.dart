@@ -224,7 +224,7 @@ Future<List<DateTime>> fetchReservedDates(String carId) async {
     for (DateTime date = reserveDate;
         date.isBefore(returnDate) || date.isAtSameMomentAs(returnDate);
         date = date.add(Duration(days: 1))) {
-      reservedDates.add(date);
+      if (date.isAfter(DateTime.now())) reservedDates.add(date);
     }
   });
 

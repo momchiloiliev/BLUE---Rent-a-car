@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/reservation.dart';
-import 'package:flutter_app/ui/shadow_button.dart';
-
 import 'address_container.dart';
 import 'appbar.dart';
 
@@ -75,18 +73,16 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double maxWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: const CustomAppBar(title: "Payment Option"),
       body: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             children: [
               Container(
                 color: Colors.white,
                 // width: double.infinity,
-                padding: const EdgeInsets.only(top: 15, left: 20, bottom: 10),
+                padding: const EdgeInsets.only(top: 15, bottom: 10),
                 margin: const EdgeInsets.only(bottom: 15),
                 child: const Text("Choose your payment method:",
                     style: TextStyle(
@@ -138,10 +134,6 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                       },
                     ),
                     Container(
-                      // decoration: const BoxDecoration(
-                      //     border: Border(
-                      //   top: BorderSide(color: Colors.grey, width: 0.5),
-                      // )),
                       child: RadioListTile(
                         activeColor: Colors.blue,
                         value: 2,
@@ -162,21 +154,21 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
               SizedBox(
                 height: 10,
               ),
-              if (errorMessagePayment.isNotEmpty && selectedOption == 0)
                 Text(
                   errorMessagePayment,
                   style: TextStyle(
-                    color: Colors.red,
+                    color: (errorMessagePayment.isNotEmpty && selectedOption == 0) ? Colors.red : Colors.white,
                     fontSize: 20,
                   ),
                 ),
             ],
           ),
+          SizedBox(height: 240,),
           Column(
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.only(top: 240),
+                // margin: const EdgeInsets.only(top: 240),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -215,7 +207,9 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                                 setState(() {
                                   isAgreed = value!;
                                 });
-                              },),
+                              },
+                              activeColor: Colors.blue,),
+
                               const Text(
                                 'Agree to our ',
                                 style: TextStyle(fontSize: 18),
@@ -272,12 +266,15 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                           ),
 
                         ),
-                        if (errorMessage.isNotEmpty)
-                          Text(
-                            errorMessage,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 18,
+                        // if (errorMessage.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(left:15.0),
+                            child: Text(
+                              (errorMessage.isNotEmpty && !isAgreed) ? errorMessage : errorMessage="",
+                              style: TextStyle(
+                                color: (errorMessage.isNotEmpty && !isAgreed) ? Colors.red : Colors.white,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                       ],
@@ -285,17 +282,8 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                   ],
                 ),
               ),
-              // if (errorMessage.isNotEmpty)
-              //   Text(
-              //     errorMessage,
-              //     style: TextStyle(
-              //       color: Colors.red,
-              //       fontSize: 18,
-              //     ),
-              //   ),
             ],
           ),
-          // shadowButton("Checkout", "/payment")
           Container(
             // width: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(

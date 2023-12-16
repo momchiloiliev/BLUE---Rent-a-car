@@ -10,11 +10,11 @@ class AddPickUpAddressScreen extends StatefulWidget {
   const AddPickUpAddressScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddPickUpAddressScreen> createState() =>
-      _AddPickUpAddressScreenState();
+  State<AddPickUpAddressScreen> createState() => _AddPickUpAddressScreenState();
 }
 
 class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
+  final _formKey = GlobalKey<FormState>();
   late List<dynamic> arguments =
       ModalRoute.of(context)!.settings.arguments as List<dynamic>? ?? [];
   late Car car = arguments[0] as Car;
@@ -24,11 +24,30 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _pickUpAddressController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _returnAddressController =
-  TextEditingController();
+      TextEditingController();
 
   late File? _imageFile = null;
+
+  Widget textField(
+      String label,
+      TextEditingController controller,
+      String? Function(String?)? validator,
+      ) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.grey),
+      ),
+      validator: validator,
+      onChanged: (value) {
+        controller.text = value;
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,51 +71,51 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
               children: [
                 _imageFile != null
                     ? Container(
-                    decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.blue,
-                      width: 5.0, // Adjust the width as needed
-                    ),
-                  ),
-                      child: CircleAvatar(
-                                        backgroundColor: Colors.blue,
-                                        radius: 70,
-                                        backgroundImage: FileImage(
-                      File(_imageFile!.path),
-                                        ),
-                                      ),
-                    )
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.blue,
+                            width: 5.0, // Adjust the width as needed
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          radius: 70,
+                          backgroundImage: FileImage(
+                            File(_imageFile!.path),
+                          ),
+                        ),
+                      )
                     : InkWell(
-                  onTap: () async {
-                    final ImagePicker _picker = ImagePicker();
-                    final XFile? image =
-                    await _picker.pickImage(source: ImageSource.camera);
+                        onTap: () async {
+                          final ImagePicker _picker = ImagePicker();
+                          final XFile? image = await _picker.pickImage(
+                              source: ImageSource.camera);
 
-                    if (image != null) {
-                      setState(() {
-                        _imageFile = File(image.path);
-                      });
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.blue,
-                        width: 2.0,
+                          if (image != null) {
+                            setState(() {
+                              _imageFile = File(image.path);
+                            });
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.blue,
+                              width: 2.0,
+                            ),
+                          ),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 30,
+                            child: Icon(
+                              Icons.photo_camera,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    child: const CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      radius: 30,
-                      child: Icon(
-                        Icons.photo_camera,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -109,7 +128,7 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                   onPressed: () async {
                     final ImagePicker _picker = ImagePicker();
                     final XFile? image =
-                    await _picker.pickImage(source: ImageSource.camera);
+                        await _picker.pickImage(source: ImageSource.camera);
 
                     if (image != null) {
                       setState(() {
@@ -134,19 +153,59 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(right: 20, left: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    textField("Name", _nameController),
-                    textField("Email", _emailController),
-                    textField("Phone", _phoneController),
-                    textField("Pick Up Address", _pickUpAddressController),
-                    textField("Return Address", _returnAddressController),
-                  ],
+                child: Form(
+                  key: _formKey, // Assign the _formKey to the Form widget
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      textField(
+                        "Name",
+                        _nameController,
+                            (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          return null;
+                        },
+                      ),
+                      textField(
+                        "Email",
+                        _emailController,
+                            (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter an email';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                      // Add validators for other fields as needed
+                      // For instance, for the phone number, you might want to add a validator
+                      // to ensure it follows a specific pattern (e.g., only numbers, specific length, etc.)
+                      textField(
+                        "Phone",
+                        _phoneController,
+                            (value) {
+                          // Add phone number validation logic here
+                          // Example: Check if the phone number has a valid format
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a phone number';
+                          }
+                          // Add additional phone number validation if needed
+                          return null;
+                        },
+                      ),
+                      textField("Pick Up Address", _pickUpAddressController, null),
+                      textField("Return Address", _returnAddressController, null),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
+
           Container(
             padding: const EdgeInsets.only(top: 10),
             decoration: BoxDecoration(
@@ -181,16 +240,17 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: ElevatedButton(
                       onPressed: () {
-                        reservation.name = _nameController.text;
-                        reservation.email = _emailController.text;
-                        reservation.phone = _phoneController.text;
-                        reservation.pickupLocation =
-                            _pickUpAddressController.text;
-                        reservation.returnLocation =
-                            _returnAddressController.text;
-                        print(reservation);
-                        Navigator.pushNamed(context, "/yourSelection",
-                            arguments: [car, reservation]);
+                        // Validate the form using _formKey.currentState
+                        if (_formKey.currentState!.validate()) {
+                          reservation.name = _nameController.text;
+                          reservation.email = _emailController.text;
+                          reservation.phone = _phoneController.text;
+                          reservation.pickupLocation = _pickUpAddressController.text;
+                          reservation.returnLocation = _returnAddressController.text;
+                          print(reservation);
+                          Navigator.pushNamed(context, "/yourSelection",
+                              arguments: [car, reservation]);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
@@ -215,15 +275,15 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
       ),
     );
   }
-
-  Widget textField(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-          labelText: label, labelStyle: const TextStyle(color: Colors.grey)),
-      onChanged: (value) {
-        controller.text = value;
-      },
-    );
-  }
+  //
+  // Widget textField(String label, TextEditingController controller) {
+  //   return TextField(
+  //     controller: controller,
+  //     decoration: InputDecoration(
+  //         labelText: label, labelStyle: const TextStyle(color: Colors.grey)),
+  //     onChanged: (value) {
+  //       controller.text = value;
+  //     },
+  //   );
+  // }
 }

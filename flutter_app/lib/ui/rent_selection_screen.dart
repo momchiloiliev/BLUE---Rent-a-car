@@ -103,6 +103,16 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      'Please select two dates: one for reserving the car and another for its return',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.8,
                     height: MediaQuery.of(context).size.height * 0.5,
@@ -445,12 +455,15 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                     ],
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 30.0, top:15.0),
+                                    padding: const EdgeInsets.only(
+                                        left: 30.0, top: 15.0),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const SizedBox(height: 10.0), // Add some space between the two columns
+                                        const SizedBox(
+                                            height:
+                                                10.0), // Add some space between the two columns
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -464,14 +477,16 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(right:30.0),
+                                              padding: const EdgeInsets.only(
+                                                  right: 30.0),
                                               child: Row(
                                                 children: [
                                                   Text(
                                                     "${car.price * 50}",
                                                     style: const TextStyle(
                                                       fontSize: 20.0,
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                       color: Colors.black38,
                                                     ),
                                                   ),
@@ -479,7 +494,8 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                                     " MKD/day",
                                                     style: TextStyle(
                                                       fontSize: 18.0,
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                       color: Colors.black38,
                                                     ),
                                                   ),

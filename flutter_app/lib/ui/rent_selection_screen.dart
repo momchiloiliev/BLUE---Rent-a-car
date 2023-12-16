@@ -131,6 +131,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                           if (args.value is PickerDateRange) {
                             startDate = args.value.startDate;
                             endDate = args.value.endDate;
+                            dayCount = endDate.difference(startDate).inDays + 1;
                           }
                         });
                       },
@@ -160,6 +161,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                   ElevatedButton(
                     onPressed: () {
                       if (isReturnDateValid()) {
+                        _calculateCheckoutSum();
                         Navigator.of(context)
                             .pop(); // Close the dialog only if the return date is valid
                       }
@@ -442,94 +444,103 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                       ),
                                     ],
                                   ),
-                                  Row(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 30.0, top: 20.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Days${endDate.day.toInt() + 1 - startDate.day.toInt()}",
-                                            style: TextStyle(
-                                              fontSize: 28.0,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black,
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 30.0, top:15.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 10.0), // Add some space between the two columns
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "${endDate.day.toInt() + 1 - startDate.day.toInt()} ${endDate.day.toInt() + 1 - startDate.day.toInt() == 1 ? 'Day' : 'Days'}",
+                                              style: const TextStyle(
+                                                fontSize: 22.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black,
+                                              ),
                                             ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "${car.price * 50}",
-                                                style: const TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black38,
-                                                ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(right:30.0),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "${car.price * 50}",
+                                                    style: const TextStyle(
+                                                      fontSize: 20.0,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.black38,
+                                                    ),
+                                                  ),
+                                                  const Text(
+                                                    " MKD/day",
+                                                    style: TextStyle(
+                                                      fontSize: 18.0,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.black38,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              const Text(
-                                                " MKD/day",
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black38,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(
-                                    //       left: 12.0, top: 20.0),
-                                    //   child: Container(
-                                    //     width: 155,
-                                    //     height: 80,
-                                    //     decoration: BoxDecoration(
-                                    //       color: Colors.transparent,
-                                    //       border: Border.all(
-                                    //         color: Colors.grey,
-                                    //         width: 2.0,
-                                    //       ),
-                                    //       borderRadius:
-                                    //           const BorderRadius.all(
-                                    //               Radius.circular(10.0)),
-                                    //     ),
-                                    //     child: Row(
-                                    //       mainAxisAlignment:
-                                    //           MainAxisAlignment.spaceAround,
-                                    //       children: [
-                                    //         IconButton(
-                                    //           onPressed: _removeDay,
-                                    //           icon: const Icon(
-                                    //             Icons.remove,
-                                    //             color: Colors.black38,
-                                    //             size: 30.0,
-                                    //           ),
-                                    //         ),
-                                    //         Text(
-                                    //           dayCount.toString(),
-                                    //           style: const TextStyle(
-                                    //             fontSize: 30.0,
-                                    //             fontWeight: FontWeight.bold,
-                                    //             color: Colors.black,
-                                    //           ),
-                                    //         ),
-                                    //         IconButton(
-                                    //           onPressed: _addDay,
-                                    //           icon: const Icon(
-                                    //             Icons.add,
-                                    //             color: Colors.black38,
-                                    //             size: 30.0,
-                                    //           ),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                  ]),
+                                  ),
+
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(
+                                  //       left: 12.0, top: 20.0),
+                                  //   child: Container(
+                                  //     width: 155,
+                                  //     height: 80,
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.transparent,
+                                  //       border: Border.all(
+                                  //         color: Colors.grey,
+                                  //         width: 2.0,
+                                  //       ),
+                                  //       borderRadius:
+                                  //           const BorderRadius.all(
+                                  //               Radius.circular(10.0)),
+                                  //     ),
+                                  //     child: Row(
+                                  //       mainAxisAlignment:
+                                  //           MainAxisAlignment.spaceAround,
+                                  //       children: [
+                                  //         IconButton(
+                                  //           onPressed: _removeDay,
+                                  //           icon: const Icon(
+                                  //             Icons.remove,
+                                  //             color: Colors.black38,
+                                  //             size: 30.0,
+                                  //           ),
+                                  //         ),
+                                  //         Text(
+                                  //           dayCount.toString(),
+                                  //           style: const TextStyle(
+                                  //             fontSize: 30.0,
+                                  //             fontWeight: FontWeight.bold,
+                                  //             color: Colors.black,
+                                  //           ),
+                                  //         ),
+                                  //         IconButton(
+                                  //           onPressed: _addDay,
+                                  //           icon: const Icon(
+                                  //             Icons.add,
+                                  //             color: Colors.black38,
+                                  //             size: 30.0,
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
+
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -783,7 +794,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                 ); // Build UI content with userId
               }
             }
-            return Text("Errror");
+            return Text("Error");
           }),
     );
   }

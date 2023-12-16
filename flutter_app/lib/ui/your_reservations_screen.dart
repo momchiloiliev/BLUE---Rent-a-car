@@ -23,6 +23,10 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
     });
   }
 
+  void refreshTab() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -120,8 +124,6 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                               child: Text('No reservation data found.'),
                             );
                           } else {
-
-
                             final List<DocumentSnapshot<Map<String, dynamic>>>
                                 reservationDocs = snapshot.data!;
                             final List<Map<String, dynamic>> reservationsData =
@@ -138,8 +140,10 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                                 getPastReservations(reservationsData);
 
                             activeReservations.sort((a, b) {
-                              bool isAfterTodayA = !isReservationBeforeToday(a['reserveDate']);
-                              bool isAfterTodayB = !isReservationBeforeToday(b['reserveDate']);
+                              bool isAfterTodayA =
+                                  !isReservationBeforeToday(a['reserveDate']);
+                              bool isAfterTodayB =
+                                  !isReservationBeforeToday(b['reserveDate']);
 
                               if (isAfterTodayA && !isAfterTodayB) {
                                 return -1; // Show reservations with date after today first
@@ -157,10 +161,26 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                                   itemCount: activeReservations.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return buildCarDetailsContainer(
-                                      context,
-                                      activeReservations[index],
+                                    Map<String, dynamic> activeReservation =
+                                        activeReservations[index];
+                                    DocumentSnapshot<Map<String, dynamic>>
+                                        matchingDoc =
+                                        reservationDocs.firstWhere(
+                                      (doc) =>
+                                          doc.data()!['reserveDate'] ==
+                                              activeReservation[
+                                                  'reserveDate'] &&
+                                          doc.data()!['returnDate'] ==
+                                              activeReservation['returnDate'],
+                                      orElse: () => throw Exception(
+                                          'Matching document not found'),
                                     );
+
+                                    String reservationId = matchingDoc.id;
+                                    return ReservationDetails(
+                                        reservation: activeReservation,
+                                        reservationId: matchingDoc.id,
+                                        refreshCallback: refreshTab);
                                   },
                                 ),
 
@@ -180,14 +200,11 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                       );
                     }
                   },
-
                 )
               : const Center(
                   child: Text('User ID not found.'),
                 ),
-
-        )
-    );
+        ));
   }
 
   List<Map<String, dynamic>> getActiveReservations(

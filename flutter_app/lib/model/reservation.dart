@@ -230,3 +230,44 @@ Future<List<DateTime>> fetchReservedDates(String carId) async {
 
   return reservedDates;
 }
+
+Future<void> removeReferencesOnReservationDeletion(
+    String deletedReservationId) async {
+  final reservationRef = FirebaseFirestore.instance
+      .collection('reservations')
+      .doc(deletedReservationId);
+
+  try {
+    final reservationDoc = await reservationRef.get();
+
+    if (reservationDoc.exists) {
+      final carId = reservationDoc.get('carId');
+      final userId = reservationDoc.get('userId');
+
+      // Delete the reservation document
+      await reservationRef.delete();
+
+      // Create a DocumentReference using the deleted reservation ID
+      final deletedReservationRef =
+          FirebaseFirestore.instance.doc('reservations/$deletedReservationId');
+
+      // Remove the reservation reference from the car
+      final carRef = FirebaseFirestore.instance.collection('cars').doc(carId);
+      await carRef.update({
+        'reservations': FieldValue.arrayRemove([deletedReservationRef])
+      });
+
+      // Remove the reservation reference from the user
+      final userRef =
+          FirebaseFirestore.instance.collection('users').doc(userId);
+      await userRef.update({
+        'reservations': FieldValue.arrayRemove([deletedReservationRef])
+      });
+
+      print('Reservation and references removed successfully.');
+    }
+  } catch (e) {
+    print('Error deleting reservation: $e');
+    // Handle errors here
+  }
+}

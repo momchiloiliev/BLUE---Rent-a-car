@@ -197,8 +197,32 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                           return null;
                         },
                       ),
-                      textField("Pick Up Address", _pickUpAddressController, null),
-                      textField("Return Address", _returnAddressController, null),
+                      textField(
+                        "Pick Up Address",
+                        _pickUpAddressController,
+                            (value) {
+                          // Add phone number validation logic here
+                          // Example: Check if the phone number has a valid format
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter pickup location';
+                          }
+                          // Add additional phone number validation if needed
+                          return null;
+                        },
+                      ),
+                      textField(
+                        "Return Address",
+                        _returnAddressController,
+                            (value) {
+                          // Add phone number validation logic here
+                          // Example: Check if the phone number has a valid format
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter return location';
+                          }
+                          // Add additional phone number validation if needed
+                          return null;
+                        },
+                      ),
                     ],
                   ),
                 ),

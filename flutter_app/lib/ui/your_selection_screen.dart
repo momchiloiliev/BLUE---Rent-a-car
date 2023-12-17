@@ -54,7 +54,7 @@ class _YourSelectionScreenState extends State<YourSelectionScreen> {
               padding: EdgeInsets.only(top: 50),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Padding(
                       padding: EdgeInsets.all(14.0),
                       child: Column(
@@ -65,7 +65,7 @@ class _YourSelectionScreenState extends State<YourSelectionScreen> {
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            'City, Country', //todo: city,country map from previous screen
+                            '${reservation.pickupLocation}', //todo: city,country map from previous screen
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
                         ],
@@ -159,24 +159,7 @@ class _YourSelectionScreenState extends State<YourSelectionScreen> {
                                       style: TextStyle(
                                         fontSize: 16,
                                       )),
-                                  // Column(
-                                  //   children: [
-                                  //     InkWell(
-                                  //       onTap: () {},
-                                  //       child: const Icon(
-                                  //         Icons.arrow_drop_up,
-                                  //         size: 15,
-                                  //       ),
-                                  //     ),
-                                  //     InkWell(
-                                  //       onTap: () {},
-                                  //       child: const Icon(
-                                  //         Icons.arrow_drop_down,
-                                  //         size: 15,
-                                  //       ),
-                                  //     )
-                                  //   ],
-                                  // )
+
                                 ],
                               ),
                             ],

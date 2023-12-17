@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/map_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import '../model/car.dart';
 import '../model/reservation.dart';
@@ -24,22 +27,29 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _pickUpAddressController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _returnAddressController =
-      TextEditingController();
+  TextEditingController();
 
   late File? _imageFile = null;
 
   Widget textField(
       String label,
       TextEditingController controller,
-      String? Function(String?)? validator,
-      ) {
+      String? Function(String?)? validator, {
+        VoidCallback? onTapIcon,
+      }) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(color: Colors.grey),
+        suffixIcon: (label == "Pick Up Address" || label == "Return Address")
+            ? IconButton(
+          icon: Icon(Icons.location_on),
+          onPressed: onTapIcon,
+        )
+            : null,
       ),
       validator: validator,
       onChanged: (value) {
@@ -48,6 +58,11 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
     );
   }
 
+  void _updateLocationController(TextEditingController controller, PlaceLocation location) {
+    setState(() {
+      controller.text = location.address ?? "Address not available";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,51 +86,52 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
               children: [
                 _imageFile != null
                     ? Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.blue,
-                            width: 5.0, // Adjust the width as needed
-                          ),
-                        ),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.blue,
-                          radius: 70,
-                          backgroundImage: FileImage(
-                            File(_imageFile!.path),
-                          ),
-                        ),
-                      )
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.blue,
+                      width: 5.0, // Adjust the width as needed
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    radius: 70,
+                    backgroundImage: FileImage(
+                      File(_imageFile!.path),
+                    ),
+                  ),
+                )
                     : InkWell(
-                        onTap: () async {
-                          final ImagePicker _picker = ImagePicker();
-                          final XFile? image = await _picker.pickImage(
-                              source: ImageSource.camera);
+                  onTap: () async {
+                    final ImagePicker _picker = ImagePicker();
+                    final XFile? image = await _picker.pickImage(
+                      source: ImageSource.camera,
+                    );
 
-                          if (image != null) {
-                            setState(() {
-                              _imageFile = File(image.path);
-                            });
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.blue,
-                              width: 2.0,
-                            ),
-                          ),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            radius: 30,
-                            child: Icon(
-                              Icons.photo_camera,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
+                    if (image != null) {
+                      setState(() {
+                        _imageFile = File(image.path);
+                      });
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.blue,
+                        width: 2.0,
                       ),
+                    ),
+                    child: const CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 30,
+                      child: Icon(
+                        Icons.photo_camera,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -128,7 +144,7 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                   onPressed: () async {
                     final ImagePicker _picker = ImagePicker();
                     final XFile? image =
-                        await _picker.pickImage(source: ImageSource.camera);
+                    await _picker.pickImage(source: ImageSource.camera);
 
                     if (image != null) {
                       setState(() {
@@ -154,7 +170,7 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 20, left: 20),
                 child: Form(
-                  key: _formKey, // Assign the _formKey to the Form widget
+                  key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -181,19 +197,13 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                           return null;
                         },
                       ),
-                      // Add validators for other fields as needed
-                      // For instance, for the phone number, you might want to add a validator
-                      // to ensure it follows a specific pattern (e.g., only numbers, specific length, etc.)
                       textField(
                         "Phone",
                         _phoneController,
                             (value) {
-                          // Add phone number validation logic here
-                          // Example: Check if the phone number has a valid format
                           if (value == null || value.isEmpty) {
                             return 'Please enter a phone number';
                           }
-                          // Add additional phone number validation if needed
                           return null;
                         },
                       ),
@@ -201,26 +211,54 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                         "Pick Up Address",
                         _pickUpAddressController,
                             (value) {
-                          // Add phone number validation logic here
-                          // Example: Check if the phone number has a valid format
                           if (value == null || value.isEmpty) {
                             return 'Please enter pickup location';
                           }
-                          // Add additional phone number validation if needed
                           return null;
+                        },
+                        onTapIcon: () async {
+                          PlaceLocation? selectedLocation = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MapScreen(
+                                isSelecting: true,
+                                onSelectLocation: (PlaceLocation location) {
+                                  _updateLocationController(_pickUpAddressController, location);
+                                },
+                              ),
+                            ),
+                          );
+
+                          if (selectedLocation != null) {
+                            _updateLocationController(_pickUpAddressController, selectedLocation);
+                          }
                         },
                       ),
                       textField(
                         "Return Address",
                         _returnAddressController,
                             (value) {
-                          // Add phone number validation logic here
-                          // Example: Check if the phone number has a valid format
                           if (value == null || value.isEmpty) {
                             return 'Please enter return location';
                           }
-                          // Add additional phone number validation if needed
                           return null;
+                        },
+                        onTapIcon: () async {
+                          PlaceLocation? selectedLocation = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MapScreen(
+                                isSelecting: true,
+                                onSelectLocation: (PlaceLocation location) {
+                                  _updateLocationController(_returnAddressController, location);
+                                },
+                              ),
+                            ),
+                          );
+
+                          if (selectedLocation != null) {
+                            _updateLocationController(_returnAddressController, selectedLocation);
+                          }
                         },
                       ),
                     ],
@@ -229,7 +267,6 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
               ),
             ),
           ),
-
           Container(
             padding: const EdgeInsets.only(top: 10),
             decoration: BoxDecoration(
@@ -264,13 +301,14 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Validate the form using _formKey.currentState
                         if (_formKey.currentState!.validate()) {
                           reservation.name = _nameController.text;
                           reservation.email = _emailController.text;
                           reservation.phone = _phoneController.text;
-                          reservation.pickupLocation = _pickUpAddressController.text;
-                          reservation.returnLocation = _returnAddressController.text;
+                          reservation.pickupLocation =
+                              _pickUpAddressController.text;
+                          reservation.returnLocation =
+                              _returnAddressController.text;
                           print(reservation);
                           Navigator.pushNamed(context, "/yourSelection",
                               arguments: [car, reservation]);
@@ -299,15 +337,4 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
       ),
     );
   }
-  //
-  // Widget textField(String label, TextEditingController controller) {
-  //   return TextField(
-  //     controller: controller,
-  //     decoration: InputDecoration(
-  //         labelText: label, labelStyle: const TextStyle(color: Colors.grey)),
-  //     onChanged: (value) {
-  //       controller.text = value;
-  //     },
-  //   );
-  // }
 }

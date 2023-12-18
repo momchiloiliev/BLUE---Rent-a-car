@@ -133,6 +133,10 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
                           'userId':
                               userId, // Include userId in the user document
                           // Include other user details here
+                          'reservations': [],
+                          'name': "",
+                          'email': "",
+                          "phone": ""
                         });
                         userRef = newUserRef;
                       }

@@ -1,18 +1,35 @@
-import 'package:flutter_app/model/reservation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  String _id;
+  String id;
+  String name;
+  String email;
+  String phone;
 
-  User(this._id);
+  User(
+      {required this.id,
+      required this.name,
+      required this.email,
+      required this.phone});
 
-  String get id => _id;
-
-  set id(String value) {
-    _id = value;
+  factory User.fromDocumentSnapshot(DocumentSnapshot snapshot) {
+    return User(
+      id: snapshot['userId'] ?? '',
+      name: snapshot['name'] ?? '',
+      email: snapshot['email'] ?? '',
+      phone: snapshot['phone'] ?? '',
+    );
   }
+}
 
-  @override
-  String toString() {
-    return _id;
+Future<DocumentSnapshot> getUserDocument(String userId) async {
+  try {
+    DocumentSnapshot userSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+    return userSnapshot;
+  } catch (e) {
+    print('Error retrieving user document: $e');
+    throw e; // You can handle the error accordingly in the calling code
   }
 }

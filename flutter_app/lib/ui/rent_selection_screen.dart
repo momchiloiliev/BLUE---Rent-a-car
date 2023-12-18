@@ -346,7 +346,7 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                   ),
                                 ),
                                 child: Column(children: [
-                                  const Row(
+                                  Row(
                                     children: [
                                       Expanded(
                                         child: Column(
@@ -357,9 +357,18 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                               padding: EdgeInsets.only(
                                                   left: 35.0, top: 50.0),
                                               child: Icon(
-                                                Icons.water_drop,
-                                                color: Colors.blueAccent,
-                                                size: 25.0,
+                                                (car.typeFuel == "Diesel" ||
+                                                        car.typeFuel ==
+                                                            "Gasoline")
+                                                    ? Icons.water_drop
+                                                    : Icons.electric_bolt,
+                                                color:
+                                                    (car.typeFuel == "Diesel" ||
+                                                            car.typeFuel ==
+                                                                "Gasoline")
+                                                        ? Colors.blue
+                                                        : Colors.yellow,
+                                                size: 30.0,
                                               ),
                                             ),
                                           ],
@@ -728,27 +737,28 @@ class _RentSelectionScreenState extends State<RentSelectionScreen> {
                                                   'userId':
                                                       userId, // Include userId in the user document
                                                   // Include other user details here
+                                                  'reservations': [],
+                                                  'name': "",
+                                                  'email': "",
+                                                  "phone": ""
                                                 });
                                                 userRef = newUserRef;
                                               }
 
                                               Reservation reservation =
                                                   Reservation(
-                                                userRef.id,
-                                                car.id,
-                                                endDate.day.toInt() +
+                                                user: userRef.id,
+                                                carId: car.id,
+                                                days: endDate.day.toInt() +
                                                     1 -
                                                     startDate.day.toInt(),
-                                                isDriverSelected,
-                                                isBabySeatSelected,
-                                                checkoutSum,
-                                                startDate,
-                                                endDate,
-                                                "", // Replace these empty strings with actual values
-                                                "", // Replace these empty strings with actual values
-                                                "", // Replace these empty strings with actual values
-                                                "", // Replace these empty strings with actual values
-                                                "",
+                                                driver: isDriverSelected,
+                                                babySeat: isBabySeatSelected,
+                                                totalPrice: checkoutSum,
+                                                reserveDate: startDate,
+                                                returnDate: endDate,
+                                                pickupLocation: "",
+                                                returnLocation: "",
                                               );
 
                                               Navigator.pushNamed(

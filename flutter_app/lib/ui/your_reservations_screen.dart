@@ -157,7 +157,11 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                             return TabBarView(
                               children: [
                                 // Active Reservations Tab
-                                ListView.builder(
+                                ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                    height: 30,
+                                  ),
                                   itemCount: activeReservations.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
@@ -185,7 +189,11 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
                                 ),
 
                                 // Past Reservations Tab
-                                ListView.builder(
+                                ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                    height: 30,
+                                  ),
                                   itemCount: pastReservations.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {

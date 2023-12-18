@@ -5,6 +5,7 @@ import 'package:flutter_app/ui/shadow_button.dart';
 
 import '../model/car.dart';
 import '../model/reservation.dart';
+import '../model/user.dart';
 
 class OrderConfirmedScreen extends StatefulWidget {
   const OrderConfirmedScreen({super.key});
@@ -25,16 +26,24 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
           title: "Payment",
         ),
         body: FutureBuilder(
-          future: getCarData(reservation.carId),
+          future: Future.wait([
+            getCarData(reservation.carId),
+            getUserDocument(reservation.user),
+          ]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data == null) {
-              return const Center(child: Text('No car data available.'));
+              return const Center(child: Text('No data available.'));
             } else {
-              Car car = snapshot.data!;
+              Car car = snapshot.data![0] as Car;
+              DocumentSnapshot userSnapshot =
+                  snapshot.data![1] as DocumentSnapshot;
+              // Convert the DocumentSnapshot to a User object
+              User user = User.fromDocumentSnapshot(userSnapshot);
+
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -120,7 +129,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                               fontWeight: FontWeight.w400),
                                         ),
                                         Text(
-                                          "  ${reservation.name}",
+                                          "  ${user.name}",
                                           style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,
@@ -138,7 +147,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                               fontWeight: FontWeight.w400),
                                         ),
                                         Text(
-                                          "  ${reservation.phone}",
+                                          "  ${user.phone}",
                                           style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,
@@ -192,7 +201,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                               fontWeight: FontWeight.w400),
                                         ),
                                         Text(
-                                          "  ${reservation.reserveDate}",
+                                          "  ${reservation.reserveDate.toString().substring(0, 10)}",
                                           style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,
@@ -228,7 +237,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                               fontWeight: FontWeight.w400),
                                         ),
                                         Text(
-                                          "  ${reservation.returnDate}",
+                                          "  ${reservation.returnDate.toString().substring(0, 10)}",
                                           style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,

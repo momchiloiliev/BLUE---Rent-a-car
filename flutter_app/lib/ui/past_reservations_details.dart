@@ -20,106 +20,153 @@ Widget buildCarDetailsContainerPast(
           Reservation reservation =
               Reservation.fromSnapshot(reservationRef as Map<String, dynamic>);
           return Container(
-            margin: const EdgeInsets.only(top: 20),
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 15,
-                  spreadRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
-                const BoxShadow(
-                  color: Colors.white,
-                  blurRadius: 15,
-                  spreadRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 15,
-                  spreadRadius: 20,
+                  blurRadius: 8,
+                  spreadRadius: 8,
                   offset: const Offset(0, 3),
                 ),
               ],
             ),
-            // height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.all(16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    car.imageLink,
+                    height: 150,
+                  ),
+                ),
                 Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          right: 8.0, left: 8.0, bottom: 8.0, top: 8.0),
-                      child: Row(
-                        children: [
-                          Column(
-                            children: [
-                              Image.network(
-                                car.imageLink,
-                                width: 150,
-                                height: 80,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(car.model,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.black54)),
-                              Text(
-                                "${car.price * 50}/per day",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black87),
-                              ),
-                              Row(
-                                children: [
-                                  Text("Days: ${reservation.days}",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      )),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                      "Picked Up: ${reservation.reserveDate.toString().substring(0, 10)}",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      )),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                      "Returned: ${reservation.returnDate.toString().substring(0, 10)}",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      )),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                      "Total Price: ${reservation.totalPrice}",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      )),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                    Text(
+                      car.model,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      " ${car.price * 50}/per day",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey[700],
                       ),
                     ),
                   ],
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Driver: ",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        reservation.driver
+                            ? Icon(Icons.check_circle, color: Colors.green)
+                            : Icon(Icons.cancel, color: Colors.red),
+                        Text(
+                          "3000/day",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Baby Seat: ",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        reservation.babySeat
+                            ? Icon(Icons.check_circle, color: Colors.green)
+                            : Icon(Icons.cancel, color: Colors.red),
+                        Text(
+                          "1000",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      "Pick up date: ${reservation.reserveDate.day}/${reservation.reserveDate.month}/${reservation.reserveDate.year}",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    Text(
+                      "Return date: ${reservation.returnDate.day}/${reservation.returnDate.month}/${reservation.returnDate.year}",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      "Pick up: ${reservation.pickupLocation}",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    Text(
+                      "Return: ${reservation.returnLocation}",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Total Price: ",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      reservation.totalPrice.toString(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           );

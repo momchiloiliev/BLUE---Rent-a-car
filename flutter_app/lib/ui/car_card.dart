@@ -78,7 +78,10 @@ class CarCard extends StatelessWidget {
                     (car.typeFuel == "Diesel" || car.typeFuel == "Gasoline")
                         ? Icons.water_drop
                         : Icons.electric_bolt,
-                    color: Colors.blue,
+                    color:
+                        (car.typeFuel == "Diesel" || car.typeFuel == "Gasoline")
+                            ? Colors.blue
+                            : Colors.yellow,
                   ),
                 ],
               )
@@ -113,7 +116,8 @@ class CarCard extends StatelessWidget {
                               color: Colors.white),
                         ),
                         Text(
-                          (car.typeFuel == "Diesel" || car.typeFuel == "Gasoline")
+                          (car.typeFuel == "Diesel" ||
+                                  car.typeFuel == "Gasoline")
                               ? 'on full tank'
                               : 'on full charge',
                           style: TextStyle(

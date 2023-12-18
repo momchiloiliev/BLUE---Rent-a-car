@@ -74,26 +74,25 @@ class _ReservationDetailsState extends State<ReservationDetails> {
           } else {
             Car car = snapshot.data!;
             return Container(
-              margin: const EdgeInsets.only(top: 20),
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 15,
-                    spreadRadius: 5,
+                    blurRadius: 8,
+                    spreadRadius: 8,
                     offset: const Offset(0, 3),
                   ),
                   const BoxShadow(
                     color: Colors.white,
-                    blurRadius: 15,
-                    spreadRadius: 5,
+                    blurRadius: 30,
+                    spreadRadius: 10,
                     offset: Offset(0, 3),
                   ),
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 15,
-                    spreadRadius: 20,
+                    blurRadius: 8,
+                    spreadRadius: 8,
                     offset: const Offset(0, 3),
                   ),
                 ],
@@ -105,8 +104,11 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            right: 8.0, left: 8.0, bottom: 30.0, top: 30.0),
+                        padding: EdgeInsets.only(
+                            right: 8.0,
+                            left: 8.0,
+                            bottom: isAfterToday ? 30.0 : 10.0,
+                            top: 30.0),
                         child: Row(
                           children: [
                             Column(
@@ -182,6 +184,22 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                         ],
                       ),
                     ),
+                  if (!isAfterToday)
+                    Container(
+                      padding: EdgeInsets.only(top: 15, bottom: 15),
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              top: BorderSide(color: Colors.grey, width: 0.3))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Ongoing Reservation',
+                            style: TextStyle(color: Colors.green, fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             );
@@ -193,5 +211,5 @@ class _ReservationDetailsState extends State<ReservationDetails> {
 bool isReservationBeforeToday(Timestamp reservationTimestamp) {
   DateTime now = DateTime.now();
   DateTime reservationDate = reservationTimestamp.toDate().toLocal();
-  return reservationDate.isBefore(DateTime(now.year, now.month, now.day));
+  return reservationDate.isBefore(now);
 }

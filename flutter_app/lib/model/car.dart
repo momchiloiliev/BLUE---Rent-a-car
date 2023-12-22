@@ -13,6 +13,7 @@ class Car {
   String typeFuel;
   bool reserved;
   String imageLink;
+  String transmission;
 
   Car(
       {required this.id,
@@ -23,7 +24,8 @@ class Car {
       required this.fullTankKm,
       required this.typeFuel,
       required this.reserved,
-      required this.imageLink});
+      required this.imageLink,
+      required this.transmission,});
 
   factory Car.fromMap(String carId, Map<String, dynamic> carData) {
     return Car(
@@ -36,6 +38,7 @@ class Car {
       typeFuel: carData['typeFuel'],
       reserved: carData['reserved'],
       imageLink: carData['imageLink'],
+      transmission: carData['transmission'],
     );
   }
 }

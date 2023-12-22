@@ -96,7 +96,7 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<void> _getAddressFromLatLng(double latitude, double longitude) async {
     final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyB03ArKv3pTg4atXsJAVFkLU35G3kQfK5k');
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyCIO_6BGYWQ0_04tBVPJVNNtMtWzRynfSk');
     final response = await http.get(url);
     final resData = json.decode(response.body);
     final results = resData['results'];

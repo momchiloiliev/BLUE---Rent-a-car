@@ -267,13 +267,23 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return Container(
-                      margin: EdgeInsets.only(left: 23.0),
+                      margin: EdgeInsets.only(left: 45.0),
                       child: CarCard(
                         snapshot: filteredCars[index],
                         index: index,
                         docId: filteredCars[index].id,
                       ));
-                } else
+                }
+                else if(index == filteredCars.length -1){
+                  return Container(
+                      margin: EdgeInsets.only(right: 45.0),
+                      child: CarCard(
+                        snapshot: filteredCars[index],
+                        index: index,
+                        docId: filteredCars[index].id,
+                      ));
+                }
+                else
                   return CarCard(
                     snapshot: filteredCars[index],
                     index: index,

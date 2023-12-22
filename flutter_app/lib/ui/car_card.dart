@@ -13,6 +13,7 @@ class CarCard extends StatelessWidget {
   final int index;
   final String docId;
 
+
   @override
   Widget build(BuildContext context) {
     Car car = Car(
@@ -25,7 +26,8 @@ class CarCard extends StatelessWidget {
         fullTankKm: snapshot.get('fullTankKm'),
         typeFuel: snapshot.get('typeFuel'),
         reserved: snapshot.get('reserved'),
-        imageLink: snapshot.get('imageLink'));
+        imageLink: snapshot.get('imageLink'),
+        transmission: snapshot.get('transmission'));
 
     return Container(
       margin: const EdgeInsets.only(right: 25),
@@ -74,6 +76,18 @@ class CarCard extends StatelessWidget {
               ),
               Column(
                 children: [
+                  Image.asset(
+                    (car.transmission == "Automatic")
+                        ? "images/automatic-transmission.png"
+                        : "images/manual-transmission.png",
+                    width: 26, // Set width and height according to your preference
+                    height: 26,
+                    color: Colors.black,
+                  ),
+                ],
+              ),
+              Column(
+                children: [
                   Icon(
                     (car.typeFuel == "Diesel" || car.typeFuel == "Gasoline")
                         ? Icons.water_drop
@@ -84,7 +98,7 @@ class CarCard extends StatelessWidget {
                             : Colors.yellow,
                   ),
                 ],
-              )
+              ),
             ],
           ),
           Row(

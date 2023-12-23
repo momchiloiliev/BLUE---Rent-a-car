@@ -18,6 +18,9 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
     "images/mercedes-logo.png",
   ];
 
+
+
+
   late Stream<QuerySnapshot<Map<String, dynamic>>> firestoreDb;
   late String brand = ModalRoute.of(context)!.settings.arguments.toString();
 
@@ -194,8 +197,8 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              // Implement action on image tap
               setState(() {
+                // Implement action on image tap
                 switch (index) {
                   case 0:
                     brand = "BMW";

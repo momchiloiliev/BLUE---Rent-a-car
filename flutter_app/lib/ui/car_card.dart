@@ -86,6 +86,9 @@ class CarCard extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(
+                width: 5,
+              ),
               Column(
                 children: [
                   Icon(

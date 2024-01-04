@@ -15,7 +15,8 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCIO_6BGYWQ0_04tBVPJVNNtMtWzRynfSk"
+          "current_key": "ANDROID_API_KEY_HERE",
+          //todo: replace api here
         }
       ],
       "services": {
@@ -34,7 +35,8 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCIO_6BGYWQ0_04tBVPJVNNtMtWzRynfSk"
+          "current_key": "ANDROID_API_KEY_HERE",
+//          "todo": Replace api here
         }
       ],
       "services": {

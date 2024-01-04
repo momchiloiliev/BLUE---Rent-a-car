@@ -8,14 +8,12 @@ import 'package:image_picker/image_picker.dart';
 import '../model/car.dart';
 import '../model/reservation.dart';
 import '../ui/appbar.dart';
-import '../ui/shadow_button.dart';
 
 class AddPickUpAddressScreen extends StatefulWidget {
   const AddPickUpAddressScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddPickUpAddressScreen> createState() =>
-      _AddPickUpAddressScreenState();
+  State<AddPickUpAddressScreen> createState() => _AddPickUpAddressScreenState();
 }
 
 class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
@@ -24,18 +22,17 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
       ModalRoute.of(context)!.settings.arguments as List<dynamic>? ?? [];
   late Car car = arguments[0] as Car;
   late Reservation reservation = arguments[1] as Reservation;
-  late Future<DocumentSnapshot<Object?>> user =
-  getUserDocument(reservation.user);
+  late Future<DocumentSnapshot<Object?>> user = getUserDocument(reservation.user);
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _pickUpAddressController =
-  TextEditingController();
-  final TextEditingController _returnAddressController =
-  TextEditingController();
+  final TextEditingController _pickUpAddressController = TextEditingController();
+  final TextEditingController _returnAddressController = TextEditingController();
 
   late File? _imageFile = null;
+
+  PlaceLocation? _selectedLocation;
 
   Widget textField(
       String label,
@@ -59,14 +56,12 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
       onChanged: (value) {
         // Update the controller's text when changes occur.
         controller.text = value;
-        // Trigger a rebuild of the widget to reflect the updated text.
-        //setState(() {});
       },
     );
   }
 
-  void _updateLocationController(
-      TextEditingController controller, PlaceLocation location) {
+  Future<void> _updateLocationController(
+      TextEditingController controller, PlaceLocation location) async {
     setState(() {
       controller.text = location.address ?? "Address not available";
     });
@@ -74,20 +69,22 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
 
   Future<void> updateUserDocument(DocumentSnapshot userDoc) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userDoc.id)
-          .update({
+      await FirebaseFirestore.instance.collection('users').doc(userDoc.id).update({
         'name': _nameController.text,
         'email': _emailController.text,
         'phone': _phoneController.text,
-        // Add other fields you want to update in the user document
       });
     } catch (e) {
       print('Error updating user document: $e');
-      // Handle the error as needed
     }
   }
+
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   _pickUpAddressController.text = reservation.pickupLocation;
+  //   _returnAddressController.text = reservation.returnLocation;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +102,8 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
           _nameController.text = userData['name'] ?? '';
           _emailController.text = userData['email'] ?? '';
           _phoneController.text = userData['phone'] ?? '';
-          _pickUpAddressController.text = reservation.pickupLocation;
-          _returnAddressController.text = reservation.returnLocation;
+          // _pickUpAddressController.text = reservation.pickupLocation;
+          // _returnAddressController.text = reservation.returnLocation;
 
           return Scaffold(
             appBar: const CustomAppBar(
@@ -216,25 +213,29 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                                 return null;
                               },
                               onTapIcon: () async {
-                                PlaceLocation? selectedLocation =
-                                await Navigator.push(
+                                PlaceLocation? selectedLocation = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MapScreen(
                                       isSelecting: true,
-                                      onSelectLocation:
-                                          (PlaceLocation location) {
-                                        _updateLocationController(
-                                            _pickUpAddressController, location);
-                                      },
+                                      onSelectLocation: (PlaceLocation location) {
+                                      print('Selected Location: ${location.address}');
+                                      _updateLocationController(_pickUpAddressController, location);
+                                      setState((){
+                                        _selectedLocation = location;
+                                      });
+                                      Navigator.pop(context, location);
+                                    },
                                     ),
                                   ),
                                 );
-
                                 if (selectedLocation != null) {
-                                  _updateLocationController(
-                                      _pickUpAddressController,
-                                      selectedLocation);
+                                  // Handle the selected location as needed
+                                  _updateLocationController(_pickUpAddressController, selectedLocation);
+                                  setState((){
+                                    _selectedLocation = _selectedLocation;
+                                  });
+                                  print('Selected Location: $selectedLocation');
                                 }
                               },
                             ),
@@ -248,25 +249,28 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                                 return null;
                               },
                               onTapIcon: () async {
-                                PlaceLocation? selectedLocation =
-                                await Navigator.push(
+                                PlaceLocation? selectedLocation = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MapScreen(
-                                      isSelecting: true,
-                                      onSelectLocation:
-                                          (PlaceLocation location) {
-                                        _updateLocationController(
-                                            _returnAddressController, location);
-                                      },
+                                      isSelecting: true, onSelectLocation: (PlaceLocation location) {
+                                      print('Selected Location: ${location.address}');
+                                      _updateLocationController(_returnAddressController, location);
+                                      setState((){
+                                        _selectedLocation = location;
+                                      });
+                                      Navigator.pop(context, location);
+                                    },
                                     ),
                                   ),
                                 );
-
                                 if (selectedLocation != null) {
-                                  _updateLocationController(
-                                      _returnAddressController,
-                                      selectedLocation);
+                                  // Handle the selected location as needed
+                                  print('Selected Location: $selectedLocation');
+                                  _updateLocationController(_returnAddressController, selectedLocation);
+                                  setState((){
+                                    _selectedLocation = _selectedLocation;
+                                  });
                                 }
                               },
                             ),
@@ -313,11 +317,11 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 updateUserDocument(userData);
-                                reservation.pickupLocation =
-                                    _pickUpAddressController.text;
-                                reservation.returnLocation =
-                                    _returnAddressController.text;
+                                reservation.pickupLocation = _pickUpAddressController.text;
+                                reservation.returnLocation = _returnAddressController.text;
                                 print(reservation);
+
+                                // Instead of directly navigating, return the reservation object
                                 Navigator.pushNamed(context, "/yourSelection",
                                     arguments: [car, reservation]);
                               }
@@ -405,8 +409,7 @@ class _CameraImageWidgetState extends State<CameraImageWidget> {
         : InkWell(
       onTap: () async {
         final ImagePicker _picker = ImagePicker();
-        final XFile? image =
-        await _picker.pickImage(source: ImageSource.camera);
+        final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
         if (image != null) {
           widget.onImageCapture(File(image.path));

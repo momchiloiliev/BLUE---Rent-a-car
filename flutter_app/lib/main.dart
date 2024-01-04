@@ -12,6 +12,7 @@ import 'package:flutter_app/ui/your_reservations_screen.dart';
 import 'package:flutter_app/ui/your_selection_screen.dart';
 
 import 'firebase_options.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

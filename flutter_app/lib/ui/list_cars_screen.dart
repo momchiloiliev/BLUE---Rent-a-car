@@ -6,6 +6,7 @@ import 'package:flutter_app/ui/car_card.dart';
 class ListCarsScreen extends StatefulWidget {
   const ListCarsScreen({Key? key}) : super(key: key);
 
+
   @override
   State<ListCarsScreen> createState() => _ListCarsScreenState();
 }
@@ -18,6 +19,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
     "images/mercedes-logo.png",
   ];
 
+  final ScrollController _scrollController = ScrollController();
 
 
 
@@ -186,19 +188,46 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
   }
 
   Widget _buildBrandList() {
+    List<String> displayedBrands = images; // Default to displaying all brands
+
+    if (brand == "Mercedes") {
+      displayedBrands = images.sublist(images.length-4); // Show only last 3 brands
+
+      // Scroll to the end without animation when Mercedes is selected
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      });
+    }
+
     return Container(
-      height: 80,
+      height: 100,
       child: ListView.separated(
-        itemCount: images.length,
+        controller: _scrollController,
+        itemCount: displayedBrands.length,
         scrollDirection: Axis.horizontal,
         separatorBuilder: (context, index) => SizedBox(
           width: 50,
         ),
         itemBuilder: (context, index) {
-          return InkWell(
+          bool isSelected = false;
+          switch (index) {
+            case 0:
+              isSelected = (brand == "BMW");
+              break;
+            case 1:
+              isSelected = (brand == "Tesla");
+              break;
+            case 2:
+              isSelected = (brand == "Ford");
+              break;
+            case 3:
+              isSelected = (brand == "Mercedes");
+              break;
+          }
+
+          return GestureDetector(
             onTap: () {
               setState(() {
-                // Implement action on image tap
                 switch (index) {
                   case 0:
                     brand = "BMW";
@@ -213,17 +242,46 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
                     brand = "Mercedes";
                     break;
                 }
+
+                if (brand == "Mercedes") {
+                  // Scroll to the end without animation
+                  _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                }
               });
             },
-            child: Image(
-              image: AssetImage(images[index]),
-              width: 100,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: isSelected ? Colors.blue : Colors.transparent,
+                  width: isSelected ? 1 : 0,
+                ),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: isSelected
+                    ? [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.3),
+                    blurRadius: 5,
+                    spreadRadius: 1,
+                    offset: Offset(0, 2),
+                  ),
+                ]
+                    : [],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image(
+                  image: AssetImage(images[index]),
+                  width: 100,
+                  height: 100,
+                ),
+              ),
             ),
           );
         },
       ),
     );
   }
+
 
   Container _buildEllipse() {
     return Container(

@@ -22,24 +22,27 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
       ModalRoute.of(context)!.settings.arguments as List<dynamic>? ?? [];
   late Car car = arguments[0] as Car;
   late Reservation reservation = arguments[1] as Reservation;
-  late Future<DocumentSnapshot<Object?>> user = getUserDocument(reservation.user);
+  late Future<DocumentSnapshot<Object?>> user =
+      getUserDocument(reservation.user);
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _pickUpAddressController = TextEditingController();
-  final TextEditingController _returnAddressController = TextEditingController();
+  final TextEditingController _pickUpAddressController =
+      TextEditingController();
+  final TextEditingController _returnAddressController =
+      TextEditingController();
 
   late File? _imageFile = null;
 
   PlaceLocation? _selectedLocation;
 
   Widget textField(
-      String label,
-      TextEditingController controller,
-      String? Function(String?)? validator, {
-        VoidCallback? onTapIcon,
-      }) {
+    String label,
+    TextEditingController controller,
+    String? Function(String?)? validator, {
+    VoidCallback? onTapIcon,
+  }) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
@@ -47,9 +50,9 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
         labelStyle: const TextStyle(color: Colors.grey),
         suffixIcon: (label == "Pick Up Address" || label == "Return Address")
             ? IconButton(
-          icon: Icon(Icons.location_on),
-          onPressed: onTapIcon,
-        )
+                icon: Icon(Icons.location_on),
+                onPressed: onTapIcon,
+              )
             : null,
       ),
       validator: validator,
@@ -69,7 +72,10 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
 
   Future<void> updateUserDocument(DocumentSnapshot userDoc) async {
     try {
-      await FirebaseFirestore.instance.collection('users').doc(userDoc.id).update({
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userDoc.id)
+          .update({
         'name': _nameController.text,
         'email': _emailController.text,
         'phone': _phoneController.text,
@@ -173,7 +179,7 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                             textField(
                               "Name",
                               _nameController,
-                                  (value) {
+                              (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your name';
                                 }
@@ -183,7 +189,7 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                             textField(
                               "Email",
                               _emailController,
-                                  (value) {
+                              (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter an email';
                                 }
@@ -196,7 +202,7 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                             textField(
                               "Phone",
                               _phoneController,
-                                  (value) {
+                              (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter a phone number';
                                 }
@@ -206,33 +212,39 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                             textField(
                               "Pick Up Address",
                               _pickUpAddressController,
-                                  (value) {
+                              (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter pickup location';
                                 }
                                 return null;
                               },
                               onTapIcon: () async {
-                                PlaceLocation? selectedLocation = await Navigator.push(
+                                PlaceLocation? selectedLocation =
+                                    await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MapScreen(
                                       isSelecting: true,
-                                      onSelectLocation: (PlaceLocation location) {
-                                      print('Selected Location: ${location.address}');
-                                      _updateLocationController(_pickUpAddressController, location);
-                                      setState((){
-                                        _selectedLocation = location;
-                                      });
-                                      Navigator.pop(context, location);
-                                    },
+                                      onSelectLocation:
+                                          (PlaceLocation location) {
+                                        print(
+                                            'Selected Location: ${location.address}');
+                                        _updateLocationController(
+                                            _pickUpAddressController, location);
+                                        setState(() {
+                                          _selectedLocation = location;
+                                        });
+                                        Navigator.pop(context, location);
+                                      },
                                     ),
                                   ),
                                 );
                                 if (selectedLocation != null) {
                                   // Handle the selected location as needed
-                                  _updateLocationController(_pickUpAddressController, selectedLocation);
-                                  setState((){
+                                  _updateLocationController(
+                                      _pickUpAddressController,
+                                      selectedLocation);
+                                  setState(() {
                                     _selectedLocation = _selectedLocation;
                                   });
                                   print('Selected Location: $selectedLocation');
@@ -242,33 +254,40 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                             textField(
                               "Return Address",
                               _returnAddressController,
-                                  (value) {
+                              (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter return location';
                                 }
                                 return null;
                               },
                               onTapIcon: () async {
-                                PlaceLocation? selectedLocation = await Navigator.push(
+                                PlaceLocation? selectedLocation =
+                                    await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MapScreen(
-                                      isSelecting: true, onSelectLocation: (PlaceLocation location) {
-                                      print('Selected Location: ${location.address}');
-                                      _updateLocationController(_returnAddressController, location);
-                                      setState((){
-                                        _selectedLocation = location;
-                                      });
-                                      Navigator.pop(context, location);
-                                    },
+                                      isSelecting: true,
+                                      onSelectLocation:
+                                          (PlaceLocation location) {
+                                        print(
+                                            'Selected Location: ${location.address}');
+                                        _updateLocationController(
+                                            _returnAddressController, location);
+                                        setState(() {
+                                          _selectedLocation = location;
+                                        });
+                                        Navigator.pop(context, location);
+                                      },
                                     ),
                                   ),
                                 );
                                 if (selectedLocation != null) {
                                   // Handle the selected location as needed
                                   print('Selected Location: $selectedLocation');
-                                  _updateLocationController(_returnAddressController, selectedLocation);
-                                  setState((){
+                                  _updateLocationController(
+                                      _returnAddressController,
+                                      selectedLocation);
+                                  setState(() {
                                     _selectedLocation = _selectedLocation;
                                   });
                                 }
@@ -315,10 +334,13 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: ElevatedButton(
                             onPressed: () {
+                              FocusScope.of(context).unfocus();
                               if (_formKey.currentState!.validate()) {
                                 updateUserDocument(userData);
-                                reservation.pickupLocation = _pickUpAddressController.text;
-                                reservation.returnLocation = _returnAddressController.text;
+                                reservation.pickupLocation =
+                                    _pickUpAddressController.text;
+                                reservation.returnLocation =
+                                    _returnAddressController.text;
                                 print(reservation);
 
                                 // Instead of directly navigating, return the reservation object
@@ -391,47 +413,48 @@ class _CameraImageWidgetState extends State<CameraImageWidget> {
   Widget build(BuildContext context) {
     return _imageFile != null
         ? Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.blue,
-          width: 5.0,
-        ),
-      ),
-      child: CircleAvatar(
-        backgroundColor: Colors.blue,
-        radius: 70,
-        backgroundImage: FileImage(
-          File(_imageFile!.path),
-        ),
-      ),
-    )
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.blue,
+                width: 5.0,
+              ),
+            ),
+            child: CircleAvatar(
+              backgroundColor: Colors.blue,
+              radius: 70,
+              backgroundImage: FileImage(
+                File(_imageFile!.path),
+              ),
+            ),
+          )
         : InkWell(
-      onTap: () async {
-        final ImagePicker _picker = ImagePicker();
-        final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+            onTap: () async {
+              final ImagePicker _picker = ImagePicker();
+              final XFile? image =
+                  await _picker.pickImage(source: ImageSource.camera);
 
-        if (image != null) {
-          widget.onImageCapture(File(image.path));
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: Colors.blue,
-            width: 2.0,
-          ),
-        ),
-        child: const CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: 30,
-          child: Icon(
-            Icons.photo_camera,
-            color: Colors.blue,
-          ),
-        ),
-      ),
-    );
+              if (image != null) {
+                widget.onImageCapture(File(image.path));
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.blue,
+                  width: 2.0,
+                ),
+              ),
+              child: const CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 30,
+                child: Icon(
+                  Icons.photo_camera,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+          );
   }
 }

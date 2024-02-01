@@ -182,13 +182,23 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                               color: Colors.grey,
                                               fontWeight: FontWeight.w400),
                                         ),
-                                        Text(
-                                          "  ${reservation.pickupLocation}",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w400),
-                                        )
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis
+                                                .horizontal, // Allow horizontal scrolling
+                                            child: Text(
+                                              reservation.pickupLocation,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     Row(
@@ -254,13 +264,23 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                               color: Colors.grey,
                                               fontWeight: FontWeight.w400),
                                         ),
-                                        Text(
-                                          "  ${reservation.returnLocation}",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w400),
-                                        )
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis
+                                                .horizontal, // Allow horizontal scrolling
+                                            child: Text(
+                                              reservation.returnLocation,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     Row(

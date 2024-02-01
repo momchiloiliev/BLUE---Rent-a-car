@@ -127,21 +127,28 @@ Widget buildCarDetailsContainerPast(
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                Column(
                   children: [
-                    Text(
-                      "Pick up: ${reservation.pickupLocation}",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[700],
+                    SingleChildScrollView(
+                      scrollDirection:
+                          Axis.horizontal, // Allow horizontal scrolling
+                      child: Text(
+                        "Pick up: ${reservation.pickupLocation}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[700],
+                        ),
                       ),
                     ),
-                    Text(
-                      "Return: ${reservation.returnLocation}",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[700],
+                    SingleChildScrollView(
+                      scrollDirection:
+                          Axis.horizontal, // Allow horizontal scrolling
+                      child: Text(
+                        "Return: ${reservation.returnLocation}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[700],
+                        ),
                       ),
                     ),
                   ],

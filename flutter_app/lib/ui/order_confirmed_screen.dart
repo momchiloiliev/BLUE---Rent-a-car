@@ -76,22 +76,17 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 80,
-                              left: MediaQuery.sizeOf(context).width * 0.22),
-                          child: const Column(
-                            children: [
-                              Image(image: AssetImage("images/Done.png")),
-                              Text(
-                                "Rental Confirmed",
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blueGrey),
-                              )
-                            ],
-                          ),
+                        const Column(
+                          children: [
+                            Center(child: Image(image: AssetImage("images/Done.png"))),
+                            Text(
+                              "Rental Confirmed",
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blueGrey),
+                            )
+                          ],
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 70),
@@ -100,7 +95,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                             children: [
                               Container(
                                 padding:
-                                    const EdgeInsets.only(left: 14, bottom: 10),
+                                    const EdgeInsets.only(left: 14, ),
                                 child: Text(
                                   "Rental Details",
                                   style: TextStyle(
@@ -321,18 +316,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                           spreadRadius: 15,
                           offset: const Offset(0, 3),
                         ),
-                        const BoxShadow(
-                          color: Colors.white,
-                          blurRadius: 15,
-                          spreadRadius: 4,
-                          offset: Offset(0, 3),
-                        ),
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          blurRadius: 15,
-                          spreadRadius: 15,
-                          offset: const Offset(0, 3),
-                        ),
+
                       ],
                     ),
                     child: Row(

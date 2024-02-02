@@ -163,126 +163,11 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                 ),
             ],
           ),
-          SizedBox(height: 240,),
-          Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                // margin: const EdgeInsets.only(top: 240),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 15,
-                      spreadRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                    const BoxShadow(
-                      color: Colors.white,
-                      blurRadius: 15,
-                      spreadRadius: 15,
-                      offset: Offset(0, 3),
-                    ),
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 15,
-                      spreadRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 15),
-                          alignment: Alignment.bottomCenter,
-                          child: Row(
-                            children: [
-                              Checkbox(value: isAgreed, onChanged: (value) {
-                                setState(() {
-                                  isAgreed = value!;
-                                });
-                              },
-                              activeColor: Colors.blue,),
+          // SizedBox(height: 100,),
+          Expanded(
+            child: Column(
 
-                              const Text(
-                                'Agree to our ',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Terms and Conditions'),
-                                        content: SingleChildScrollView(
-                                          child: ListBody(
-                                            children: <Widget>[
-                                              Text(
-                                                'Welcome to BLUE Rent-a-Car service!\n\n'
-                                                    'By using our service, you agree to the following terms and conditions:\n\n'
-                                                    '1. You must have a valid driver\'s license.\n\n'
-                                                    '2. The car must be returned in the same condition it was rented.\n\n'
-                                                    '3. Any damages caused during the rental period are the responsibility of the renter.\n\n'
-                                                    '4. Rental fees must be paid in full upon return.\n\n'
-                                                    '5. Any violation of traffic rules or laws is the responsibility of the renter.\n\n'
-                                                    'Thank you for choosing our service!',
-                                              ),
-                                              SizedBox(height: 20),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.blue),
-                                                child: Text(
-                                                  'OK',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Text(
-                                  'Terms and conditions',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                        ),
-                        // if (errorMessage.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(left:15.0),
-                            child: Text(
-                              (errorMessage.isNotEmpty && !isAgreed) ? errorMessage : errorMessage="",
-                              style: TextStyle(
-                                color: (errorMessage.isNotEmpty && !isAgreed) ? Colors.red : Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
           Container(
             // width: MediaQuery.of(context).size.width * 0.8,
@@ -316,13 +201,108 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                   child: Column(
                     children: [
                       Container(
+                        padding: const EdgeInsets.all(8),
+                        // margin: const EdgeInsets.only(top: 240),
+
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 15),
+                                  alignment: Alignment.bottomCenter,
+                                  child: Row(
+                                    children: [
+                                      Checkbox(value: isAgreed, onChanged: (value) {
+                                        setState(() {
+                                          isAgreed = value!;
+                                        });
+                                      },
+                                        activeColor: Colors.blue,),
+
+                                      const Text(
+                                        'Agree to our ',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('Terms and Conditions'),
+                                                content: SingleChildScrollView(
+                                                  child: ListBody(
+                                                    children: <Widget>[
+                                                      Text(
+                                                        'Welcome to BLUE Rent-a-Car service!\n\n'
+                                                            'By using our service, you agree to the following terms and conditions:\n\n'
+                                                            '1. You must have a valid driver\'s license.\n\n'
+                                                            '2. The car must be returned in the same condition it was rented.\n\n'
+                                                            '3. Any damages caused during the rental period are the responsibility of the renter.\n\n'
+                                                            '4. Rental fees must be paid in full upon return.\n\n'
+                                                            '5. Any violation of traffic rules or laws is the responsibility of the renter.\n\n'
+                                                            'Thank you for choosing our service!',
+                                                      ),
+                                                      SizedBox(height: 20),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                            backgroundColor: Colors.blue),
+                                                        child: Text(
+                                                          'OK',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Terms and conditions',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                ),
+                                // if (errorMessage.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(left:15.0),
+                                  child: Text(
+                                    (errorMessage.isNotEmpty && !isAgreed) ? errorMessage : errorMessage="",
+                                    style: TextStyle(
+                                      color: (errorMessage.isNotEmpty && !isAgreed) ? Colors.red : Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
                         decoration: const BoxDecoration(
                             border: Border(
                                 top: BorderSide(
                                     color: Colors.grey, width: 0.5))),
                         padding: const EdgeInsets.only(
                             bottom: 14, left: 14, right: 14, top: 30),
-                        child: Row(
+                        child:
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

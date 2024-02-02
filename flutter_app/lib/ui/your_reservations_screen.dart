@@ -230,7 +230,7 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
     return reservations.where((reservation) {
       final DateTime reserveDate = reservation['reserveDate'].toDate();
       final DateTime returnDate = reservation['returnDate'].toDate();
-      return returnDate.isAfter(now);
+      return returnDate.add(Duration(hours:23)).isAfter(now);
     }).toList();
   }
 
@@ -240,7 +240,7 @@ class _YourReservationsScreenState extends State<YourReservationsScreen> {
     return reservations.where((reservation) {
       final DateTime reserveDate = reservation['reserveDate'].toDate();
       final DateTime returnDate = reservation['returnDate'].toDate();
-      return returnDate.isBefore(now);
+      return returnDate.add(Duration(hours:23)).isBefore(now);
     }).toList();
   }
 }

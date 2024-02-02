@@ -6,7 +6,6 @@ import 'package:flutter_app/ui/car_card.dart';
 class ListCarsScreen extends StatefulWidget {
   const ListCarsScreen({Key? key}) : super(key: key);
 
-
   @override
   State<ListCarsScreen> createState() => _ListCarsScreenState();
 }
@@ -20,8 +19,6 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
   ];
 
   final ScrollController _scrollController = ScrollController();
-
-
 
   late Stream<QuerySnapshot<Map<String, dynamic>>> firestoreDb;
   late String brand = ModalRoute.of(context)!.settings.arguments.toString();
@@ -191,7 +188,8 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
     List<String> displayedBrands = images; // Default to displaying all brands
 
     if (brand == "Mercedes") {
-      displayedBrands = images.sublist(images.length-4); // Show only last 3 brands
+      displayedBrands =
+          images.sublist(images.length - 4); // Show only last 3 brands
 
       // Scroll to the end without animation when Mercedes is selected
       WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -245,7 +243,8 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
 
                 if (brand == "Mercedes") {
                   // Scroll to the end without animation
-                  _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                  _scrollController
+                      .jumpTo(_scrollController.position.maxScrollExtent);
                 }
               });
             },
@@ -258,13 +257,13 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: isSelected
                     ? [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.3),
-                    blurRadius: 5,
-                    spreadRadius: 1,
-                    offset: Offset(0, 2),
-                  ),
-                ]
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.3),
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                          offset: Offset(0, 2),
+                        ),
+                      ]
                     : [],
               ),
               child: ClipRRect(
@@ -281,7 +280,6 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
       ),
     );
   }
-
 
   Container _buildEllipse() {
     return Container(
@@ -334,8 +332,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
                         index: index,
                         docId: filteredCars[index].id,
                       ));
-                }
-                else if(index == filteredCars.length -1){
+                } else if (index == filteredCars.length - 1) {
                   return Container(
                       margin: EdgeInsets.only(right: 45.0),
                       child: CarCard(
@@ -343,8 +340,7 @@ class _ListCarsScreenState extends State<ListCarsScreen> {
                         index: index,
                         docId: filteredCars[index].id,
                       ));
-                }
-                else
+                } else
                   return CarCard(
                     snapshot: filteredCars[index],
                     index: index,

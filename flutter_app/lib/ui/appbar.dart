@@ -23,6 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Colors.white,
         ),
         onPressed: () {
+          FocusScope.of(context).unfocus();
           Navigator.pop(context);
         },
       ),

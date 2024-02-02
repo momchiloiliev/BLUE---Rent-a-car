@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/ui/map_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -43,6 +44,14 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
     String? Function(String?)? validator, {
     VoidCallback? onTapIcon,
   }) {
+    TextInputType keyboardType = TextInputType.text;
+    List<TextInputFormatter>? inputFormatters;
+
+    if (label == "Phone") {
+      keyboardType = TextInputType.phone;
+      inputFormatters = [FilteringTextInputFormatter.digitsOnly];
+    }
+
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
@@ -56,10 +65,8 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
             : null,
       ),
       validator: validator,
-      onChanged: (value) {
-        // Update the controller's text when changes occur.
-        controller.text = value;
-      },
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
     );
   }
 
@@ -85,13 +92,6 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
     }
   }
 
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   _pickUpAddressController.text = reservation.pickupLocation;
-  //   _returnAddressController.text = reservation.returnLocation;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot<Object?>>(
@@ -105,11 +105,28 @@ class _AddPickUpAddressScreenState extends State<AddPickUpAddressScreen> {
           return Text('No user data available.');
         } else {
           DocumentSnapshot<Object?> userData = snapshot.data!;
-          _nameController.text = userData['name'] ?? '';
-          _emailController.text = userData['email'] ?? '';
-          _phoneController.text = userData['phone'] ?? '';
-          // _pickUpAddressController.text = reservation.pickupLocation;
-          // _returnAddressController.text = reservation.returnLocation;
+          if (!_nameController.text.isEmpty &&
+              !_emailController.text.isEmpty &&
+              !_phoneController.text.isEmpty) {
+            _nameController.text = _nameController.text;
+            _emailController.text = _emailController.text;
+            _phoneController.text = _phoneController.text;
+          }
+
+          if (userData.exists) {
+            print("Name: " + _nameController.text);
+            print("Email: " + _emailController.text);
+            print("Phone: " + _phoneController.text);
+            _nameController.text = _nameController.text.isEmpty
+                ? userData['name']
+                : _nameController.text;
+            _emailController.text = _emailController.text.isEmpty
+                ? userData['email']
+                : _emailController.text;
+            _phoneController.text = _phoneController.text.isEmpty
+                ? userData['phone']
+                : _phoneController.text;
+          }
 
           return Scaffold(
             appBar: const CustomAppBar(

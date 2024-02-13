@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_app/api_key.dart';
+
 
 class MapScreen extends StatefulWidget {
   final bool isSelecting;
@@ -65,7 +65,7 @@ class _MapScreenState extends State<MapScreen> {
               // Additional initialization if needed
             },
             initialCameraPosition: CameraPosition(
-              target: _currentLocation ?? LatLng(37.7749, -122.4194),
+              target: _currentLocation ?? LatLng(41.6086, 21.7453),
               zoom: 14.0,
             ),
             onTap: widget.isSelecting ? _updateSelectedLocation : null,

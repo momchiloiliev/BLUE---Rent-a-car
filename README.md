@@ -1,4 +1,5 @@
-# Rent a Car Flutter Project - BLUE
+# Rent a Car Flutter Project - BLUE @ FINKI - Mobilni informaciski sistemi
+
 
 Welcome to our Car Rental App! This application allows users to easily browse through a list of available car brands, select a specific brand to view the cars available, rent a car for desired days, select additional options such as a driver or baby seat, provide pickup information, choose a payment method, and manage their reservations.
 

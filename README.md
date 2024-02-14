@@ -68,7 +68,6 @@ Welcome to our Car Rental App! This application allows users to easily browse th
 - cloud_firestore
 - image_picker
 - syncfusion_flutter_datepicker
-- http
 - google_maps_flutter
 
 ## Screenshots
